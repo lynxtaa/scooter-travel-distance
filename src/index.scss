@@ -4,10 +4,7 @@ $info: #477183;
 $warning: #a19a8e;
 $body-bg: #212337;
 $body-color: #fff;
-$red: #ff8a75 !default;
+$red: #ff8a75;
+$input-group-addon-bg: #fff;
 
 @import '~bootstrap/scss/bootstrap';
-
-body {
-	font-size: 18px;
-}
