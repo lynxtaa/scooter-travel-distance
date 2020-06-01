@@ -1,7 +1,12 @@
 import React from 'react'
 
-import styles from './App.module.css'
+import Calc from './Calc'
+import './App.scss'
 
 export default function App() {
-	return <div className={styles.App}></div>
+	return (
+		<div className="App">
+			<Calc />
+		</div>
+	)
 }

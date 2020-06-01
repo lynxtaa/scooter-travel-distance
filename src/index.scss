@@ -1,0 +1,13 @@
+$primary: #443f4a;
+$secondary: #736c7a;
+$info: #477183;
+$warning: #a19a8e;
+$body-bg: #212337;
+$body-color: #fff;
+$red: #ff8a75 !default;
+
+@import '~bootstrap/scss/bootstrap';
+
+body {
+	font-size: 18px;
+}
