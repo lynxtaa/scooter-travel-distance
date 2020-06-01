@@ -1,0 +1,68 @@
+{
+  "name": "scooter-travel-distance",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Alex Kondratyuk <lynxtaa@gmail.com>",
+  "repository": "https://github.com/lynxtaa/scooter-travel-distance.git",
+  "homepage": "http://lynxtaa.github.io/scooter-travel-distance",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "jest": {
+    "clearMocks": true
+  },
+  "prettier": {
+    "printWidth": 90,
+    "useTabs": true,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "endOfLine": "lf"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.37",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "gh-pages": "^2.2.0",
+    "husky": "^4.2.5",
+    "normalize.css": "^8.0.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hook-form": "^5.7.2",
+    "react-scripts": "3.4.1",
+    "react-spring": "^9.0.0-rc.2",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "serve": "npx serve -s build",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
