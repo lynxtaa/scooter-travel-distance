@@ -24,6 +24,11 @@
     "endOfLine": "lf"
   },
   "dependencies": {
+    "ms": "^2.1.2",
+    "node-fetch": "^2.6.0",
+    "serve-handler": "^6.1.2"
+  },
+  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -36,8 +41,6 @@
     "husky": "^4.2.5",
     "i18next": "^19.4.5",
     "i18next-browser-languagedetector": "^4.2.0",
-    "ms": "^2.1.2",
-    "node-fetch": "^2.6.0",
     "node-sass": "npm:sass@^1.26.7",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
@@ -48,11 +51,9 @@
     "react-scripts": "3.4.1",
     "react-spring": "^9.0.0-rc.2",
     "reactstrap": "^8.4.1",
-    "serve-handler": "^6.1.2",
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "postinstall": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
