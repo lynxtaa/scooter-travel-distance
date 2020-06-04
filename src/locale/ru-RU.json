@@ -1,0 +1,19 @@
+{
+	"Scooter Travel Distance Calculator": "Калькулятор точного пробега",
+	"Rider's Weight": "Вес ездока",
+	"required": "обязательное поле",
+	"positive number required": "число должно быть положительным",
+	"kg": "кг",
+	"Battery Capacity": "Аккумулятор",
+	"W⋅h": "Вт⋅ч",
+	"Temperature Outside": "Температура воздуха",
+	"Full battery charges count": "Количество полных зарядок батареи",
+	"Speed": "Скорость",
+	"Slow ride": "Медленная езда",
+	"Medium speed ride": "Езда на средней скорости",
+	"Fast ride": "Быстрая езда",
+	"Calculate": "Рассчитать",
+	"Distance": "Пробег",
+	"km": "км",
+	"A new version is available! Reload?": "Доступна новая версия приложения. Обновить страницу?"
+}

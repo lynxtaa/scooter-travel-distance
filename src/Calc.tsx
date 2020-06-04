@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import {
-	Container,
 	FormGroup,
 	Input,
 	Label,
@@ -14,6 +14,7 @@ import {
 
 import './Calc.scss'
 import Counter from './Counter'
+import useTitle from './hooks/useTitle'
 
 type FormValues = {
 	weight: string
@@ -24,6 +25,7 @@ type FormValues = {
 }
 
 export default function Calc() {
+	const { t } = useTranslation()
 	const [result, setResult] = useState<number | null>(null)
 
 	const [savedValues, setSavedValues] = useState<FormValues | undefined>(() => {
@@ -40,6 +42,10 @@ export default function Calc() {
 			localStorage.setItem('calcValues', JSON.stringify(savedValues))
 		}
 	}, [savedValues])
+
+	const title = t('Scooter Travel Distance Calculator')
+
+	useTitle(title)
 
 	function onSubmit({ weight, chargesNum, temperature, battery, speed }: FormValues) {
 		const km = Math.round(
@@ -62,11 +68,11 @@ export default function Calc() {
 	}
 
 	return (
-		<Container className="Calc">
-			<h3 className="mb-4">Калькулятор точного пробега</h3>
+		<div className="Calc">
+			<h3 className="mb-4">{title}</h3>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<FormGroup>
-					<Label for="weight">Вес ездока</Label>
+					<Label for="weight">{t("Rider's Weight")}</Label>
 					<InputGroup>
 						<Input
 							type="number"
@@ -74,17 +80,17 @@ export default function Calc() {
 							id="weight"
 							placeholder="75"
 							invalid={Boolean(errors.weight)}
-							innerRef={register({ required: 'обязательное поле' })}
+							innerRef={register({ required: t('required')! })}
 						/>
 						<InputGroupAddon addonType="append">
-							<InputGroupText>кг</InputGroupText>
+							<InputGroupText>{t('kg')}</InputGroupText>
 						</InputGroupAddon>
 						{errors.weight && <FormFeedback>{errors.weight.message}</FormFeedback>}
 					</InputGroup>
 				</FormGroup>
 
 				<FormGroup>
-					<Label for="battery">Аккумулятор</Label>
+					<Label for="battery">{t('Battery Capacity')}</Label>
 					<InputGroup>
 						<Input
 							type="number"
@@ -92,17 +98,17 @@ export default function Calc() {
 							id="battery"
 							placeholder="500"
 							invalid={Boolean(errors.battery)}
-							innerRef={register({ required: 'обязательное поле' })}
+							innerRef={register({ required: t('required')! })}
 						/>
 						<InputGroupAddon addonType="append">
-							<InputGroupText>Вт⋅ч</InputGroupText>
+							<InputGroupText>{t('W⋅h')}</InputGroupText>
 						</InputGroupAddon>
 						{errors.battery && <FormFeedback>{errors.battery.message}</FormFeedback>}
 					</InputGroup>
 				</FormGroup>
 
 				<FormGroup>
-					<Label for="temperature">Температура воздуха</Label>
+					<Label for="temperature">{t('Temperature Outside')}</Label>
 					<InputGroup>
 						<Input
 							type="number"
@@ -110,7 +116,7 @@ export default function Calc() {
 							id="temperature"
 							placeholder="20"
 							invalid={Boolean(errors.temperature)}
-							innerRef={register({ required: 'обязательное поле' })}
+							innerRef={register({ required: t('required')! })}
 						/>
 						<InputGroupAddon addonType="append">
 							<InputGroupText>°C</InputGroupText>
@@ -122,31 +128,31 @@ export default function Calc() {
 				</FormGroup>
 
 				<FormGroup>
-					<Label for="chargesNum">Количество полных зарядок батареи</Label>
+					<Label for="chargesNum">{t('Full battery charges count')}</Label>
 					<Input
 						type="number"
 						name="chargesNum"
 						id="chargesNum"
 						placeholder="10"
 						invalid={Boolean(errors.chargesNum)}
-						innerRef={register({ required: 'обязательное поле' })}
+						innerRef={register({ required: t('required')! })}
 					/>
 					{errors.chargesNum && <FormFeedback>{errors.chargesNum.message}</FormFeedback>}
 				</FormGroup>
 
 				<FormGroup>
-					<Label for="speed">Скорость</Label>
+					<Label for="speed">{t('Speed')}</Label>
 					<Input
 						type="select"
 						name="speed"
 						id="speed"
 						invalid={Boolean(errors.speed)}
-						innerRef={register({ required: 'обязательное поле' })}
+						innerRef={register({ required: t('required')! })}
 					>
 						<option disabled selected value="" hidden></option>
-						<option value="1">Медленная езда</option>
-						<option value="0.81">Езда на средней скорости</option>
-						<option value="0.54">Быстрая езда</option>
+						<option value="1">{t('Slow ride')}</option>
+						<option value="0.81">{t('Medium speed ride')}</option>
+						<option value="0.54">{t('Fast ride')}</option>
 					</Input>
 					{errors.speed && <FormFeedback>{errors.speed.message}</FormFeedback>}
 				</FormGroup>
@@ -154,14 +160,14 @@ export default function Calc() {
 				<div className="d-flex align-items-center mt-4">
 					{typeof result === 'number' && (
 						<div className="result">
-							Пробег: <Counter>{result}</Counter> км
+							{t('Distance')}: <Counter>{result}</Counter> {t('km')}
 						</div>
 					)}
 					<Button type="submit" className="ml-auto">
-						Рассчитать
+						{t('Calculate')}
 					</Button>
 				</div>
 			</form>
-		</Container>
+		</div>
 	)
 }

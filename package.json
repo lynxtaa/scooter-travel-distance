@@ -4,7 +4,7 @@
   "private": true,
   "author": "Alex Kondratyuk <lynxtaa@gmail.com>",
   "repository": "https://github.com/lynxtaa/scooter-travel-distance.git",
-  "homepage": "http://lynxtaa.github.io/scooter-travel-distance",
+  "homepage": "https://lynxtaa.github.io/scooter-travel-distance",
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
@@ -33,12 +33,15 @@
     "bootstrap": "^4.5.0",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
+    "i18next": "^19.4.5",
+    "i18next-browser-languagedetector": "^4.2.0",
     "node-sass": "npm:sass@^1.26.7",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.0.0-rc.2",
+    "react-i18next": "^11.5.0",
     "react-scripts": "3.4.1",
     "react-spring": "^9.0.0-rc.2",
     "reactstrap": "^8.4.1",
