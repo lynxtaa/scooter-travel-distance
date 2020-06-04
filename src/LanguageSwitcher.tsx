@@ -16,25 +16,23 @@ export default function LanguageSwitcher() {
 	const { i18n } = useTranslation()
 
 	return (
-		<div className="d-flex">
-			<UncontrolledDropdown className="mb-3 ml-auto">
-				<DropdownToggle outline caret>
-					{languages[i18n.language].icon}{' '}
-				</DropdownToggle>
-				<DropdownMenu>
-					{Object.keys(languages)
-						.filter((key) => key !== i18n.language)
-						.map((key) => (
-							<DropdownItem
-								key={key}
-								title={languages[key].title}
-								onClick={() => i18n.changeLanguage(key)}
-							>
-								{languages[key].icon}
-							</DropdownItem>
-						))}
-				</DropdownMenu>
-			</UncontrolledDropdown>
-		</div>
+		<UncontrolledDropdown className="ml-2">
+			<DropdownToggle outline caret>
+				{languages[i18n.language].icon}{' '}
+			</DropdownToggle>
+			<DropdownMenu>
+				{Object.keys(languages)
+					.filter((key) => key !== i18n.language)
+					.map((key) => (
+						<DropdownItem
+							key={key}
+							title={languages[key].title}
+							onClick={() => i18n.changeLanguage(key)}
+						>
+							{languages[key].icon}
+						</DropdownItem>
+					))}
+			</DropdownMenu>
+		</UncontrolledDropdown>
 	)
 }

@@ -25,7 +25,15 @@ type FormValues = {
 	speed: string
 }
 
-export default function Calc() {
+type Props = {
+	isMetric: boolean
+}
+
+const convertFToC = (f: number | string) => ((Number(f) - 32) * 5) / 9
+const convertLbToKg = (lb: number | string) => Number(lb) / 2.205
+const convertKmToMiles = (km: number | string) => Number(km) / 1.609
+
+export default function Calc({ isMetric }: Props) {
 	const { t } = useTranslation()
 	const [result, setResult] = useState<number | null>(null)
 
@@ -42,26 +50,30 @@ export default function Calc() {
 
 	useTitle(title)
 
-	function onSubmit({ weight, chargesNum, temperature, battery, speed }: FormValues) {
+	function onSubmit(form: FormValues) {
+		const weight = isMetric ? Number(form.weight) : convertLbToKg(form.weight)
+
+		const temperature = isMetric
+			? Number(form.temperature)
+			: convertFToC(form.temperature)
+
+		const chargesNum = Number(form.chargesNum)
+		const battery = Number(form.battery)
+		const speed = Number(form.speed)
+
 		// Формула позаимствована отсюда
 		// https://odno-koleso.com/kalkulyator-probega
 		const km = Math.round(
-			((437.52 / Number(weight) - Number(chargesNum) * 0.001206) *
-				((Number(temperature) * 0.156233 + 15.625) / 10.938) *
-				Number(battery) *
-				Number(speed)) /
+			((437.52 / weight - chargesNum * 0.001206) *
+				((temperature * 0.156233 + 15.625) / 10.938) *
+				battery *
+				speed) /
 				100,
 		)
 
-		setResult(Math.max(km, 0))
+		setResult(Math.max(isMetric ? km : convertKmToMiles(km), 0))
 
-		setSavedValues({
-			weight,
-			chargesNum,
-			temperature,
-			battery,
-			speed,
-		})
+		setSavedValues(form)
 	}
 
 	return (
@@ -75,7 +87,7 @@ export default function Calc() {
 							type="number"
 							name="weight"
 							id="weight"
-							placeholder="75"
+							placeholder={isMetric ? '75' : '165'}
 							invalid={Boolean(errors.weight)}
 							innerRef={register({
 								required: t('required')!,
@@ -83,7 +95,7 @@ export default function Calc() {
 							})}
 						/>
 						<InputGroupAddon addonType="append">
-							<InputGroupText>{t('kg')}</InputGroupText>
+							<InputGroupText>{t(isMetric ? 'kg' : 'lbs')}</InputGroupText>
 						</InputGroupAddon>
 						{errors.weight && <FormFeedback>{errors.weight.message}</FormFeedback>}
 					</InputGroup>
@@ -117,12 +129,12 @@ export default function Calc() {
 							type="number"
 							name="temperature"
 							id="temperature"
-							placeholder="20"
+							placeholder={isMetric ? '20' : '70'}
 							invalid={Boolean(errors.temperature)}
 							innerRef={register({ required: t('required')! })}
 						/>
 						<InputGroupAddon addonType="append">
-							<InputGroupText>°C</InputGroupText>
+							<InputGroupText>°{isMetric ? 'C' : 'F'}</InputGroupText>
 						</InputGroupAddon>
 						{errors.temperature && (
 							<FormFeedback>{errors.temperature.message}</FormFeedback>
@@ -164,7 +176,7 @@ export default function Calc() {
 				<div className="d-flex align-items-center mt-4">
 					{typeof result === 'number' && (
 						<div className="result">
-							{t('Distance')}: <Counter>{result}</Counter> {t('km')}
+							{t('Distance')}: <Counter>{result}</Counter> {t(isMetric ? 'km' : 'miles')}
 						</div>
 					)}
 					<Button type="submit" className="ml-auto">

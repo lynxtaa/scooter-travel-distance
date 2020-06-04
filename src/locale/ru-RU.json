@@ -4,6 +4,7 @@
 	"required": "обязательное поле",
 	"positive number required": "число должно быть положительным",
 	"kg": "кг",
+	"lbs": "фунт.",
 	"Battery Capacity": "Аккумулятор",
 	"W⋅h": "Вт⋅ч",
 	"Temperature Outside": "Температура воздуха",
@@ -15,5 +16,8 @@
 	"Calculate": "Рассчитать",
 	"Distance": "Пробег",
 	"km": "км",
-	"A new version is available! Reload?": "Доступна новая версия приложения. Обновить страницу?"
+	"miles": "миль",
+	"A new version is available! Reload?": "Доступна новая версия приложения. Обновить страницу?",
+	"kg/km/°C": "кг/км/°C",
+	"lbs/miles/°F": "фунты/мили/°F"
 }
