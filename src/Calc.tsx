@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
@@ -11,6 +11,7 @@ import {
 	InputGroupAddon,
 	InputGroupText,
 } from 'reactstrap'
+import Qty from 'js-quantities'
 
 import './Calc.scss'
 import Counter from './Counter'
@@ -29,10 +30,6 @@ type Props = {
 	isMetric: boolean
 }
 
-const convertFToC = (f: number | string) => ((Number(f) - 32) * 5) / 9
-const convertLbToKg = (lb: number | string) => Number(lb) / 2.205
-const convertKmToMiles = (km: number | string) => Number(km) / 1.609
-
 export default function Calc({ isMetric }: Props) {
 	const { t } = useTranslation()
 	const [result, setResult] = useState<number | null>(null)
@@ -50,16 +47,20 @@ export default function Calc({ isMetric }: Props) {
 
 	useTitle(title)
 
+	useEffect(() => {
+		setResult(null)
+	}, [isMetric])
+
 	function onSubmit(form: FormValues) {
-		const weight = isMetric ? Number(form.weight) : convertLbToKg(form.weight)
+		const weight = isMetric ? +form.weight : new Qty(+form.weight, 'lbs').to('kg').scalar
 
 		const temperature = isMetric
-			? Number(form.temperature)
-			: convertFToC(form.temperature)
+			? +form.temperature
+			: new Qty(+form.temperature, 'tempF').to('tempC').scalar
 
-		const chargesNum = Number(form.chargesNum)
-		const battery = Number(form.battery)
-		const speed = Number(form.speed)
+		const chargesNum = +form.chargesNum
+		const battery = +form.battery
+		const speed = +form.speed
 
 		// Формула позаимствована отсюда
 		// https://odno-koleso.com/kalkulyator-probega
@@ -71,7 +72,7 @@ export default function Calc({ isMetric }: Props) {
 				100,
 		)
 
-		setResult(Math.max(isMetric ? km : convertKmToMiles(km), 0))
+		setResult(Math.max(isMetric ? km : new Qty(km, 'km').to('miles').scalar, 0))
 
 		setSavedValues(form)
 	}
