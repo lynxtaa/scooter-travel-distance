@@ -1,38 +1,33 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-	UncontrolledDropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-} from 'reactstrap'
+import { ButtonGroup, Button } from 'reactstrap'
 
-const languages: { [key: string]: { icon: string; title: string } } = {
-	'ru-RU': { icon: 'RU', title: 'Русский' },
-	en: { icon: 'EN', title: 'English' },
+enum Language {
+	En = 'en',
+	Ru = 'ru-RU',
 }
 
 export default function LanguageSwitcher() {
 	const { i18n } = useTranslation()
 
 	return (
-		<UncontrolledDropdown className="ml-2">
-			<DropdownToggle outline caret>
-				{languages[i18n.language].icon}{' '}
-			</DropdownToggle>
-			<DropdownMenu>
-				{Object.keys(languages)
-					.filter((key) => key !== i18n.language)
-					.map((key) => (
-						<DropdownItem
-							key={key}
-							title={languages[key].title}
-							onClick={() => i18n.changeLanguage(key)}
-						>
-							{languages[key].icon}
-						</DropdownItem>
-					))}
-			</DropdownMenu>
-		</UncontrolledDropdown>
+		<ButtonGroup className="ml-2">
+			<Button
+				active={i18n.language === Language.En}
+				onClick={() => i18n.changeLanguage(Language.En)}
+				title="English"
+				outline
+			>
+				EN
+			</Button>
+			<Button
+				active={i18n.language === Language.Ru}
+				onClick={() => i18n.changeLanguage(Language.Ru)}
+				title="Русский"
+				outline
+			>
+				RU
+			</Button>
+		</ButtonGroup>
 	)
 }
