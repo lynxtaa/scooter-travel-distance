@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
@@ -15,6 +15,7 @@ import {
 import './Calc.scss'
 import Counter from './Counter'
 import useTitle from './hooks/useTitle'
+import useLocalStorage from './hooks/useLocalStorage'
 
 type FormValues = {
 	weight: string
@@ -28,10 +29,7 @@ export default function Calc() {
 	const { t } = useTranslation()
 	const [result, setResult] = useState<number | null>(null)
 
-	const [savedValues, setSavedValues] = useState<FormValues | undefined>(() => {
-		const saved = localStorage.getItem('calcValues')
-		return saved ? JSON.parse(saved) : undefined
-	})
+	const [savedValues, setSavedValues] = useLocalStorage<FormValues>('calcValues')
 
 	const validatePositive = (value: string) =>
 		Number(value) > 0 ? undefined : t('positive number required')
@@ -39,12 +37,6 @@ export default function Calc() {
 	const { register, handleSubmit, errors } = useForm<FormValues>({
 		defaultValues: savedValues,
 	})
-
-	useEffect(() => {
-		if (savedValues) {
-			localStorage.setItem('calcValues', JSON.stringify(savedValues))
-		}
-	}, [savedValues])
 
 	const title = t('Scooter Travel Distance Calculator')
 
@@ -159,8 +151,9 @@ export default function Calc() {
 						id="speed"
 						invalid={Boolean(errors.speed)}
 						innerRef={register({ required: t('required')! })}
+						defaultValue=""
 					>
-						<option disabled selected value="" hidden></option>
+						<option disabled value="" hidden></option>
 						<option value="1">{t('Slow ride')}</option>
 						<option value="0.81">{t('Medium speed ride')}</option>
 						<option value="0.54">{t('Fast ride')}</option>
