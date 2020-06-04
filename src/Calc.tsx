@@ -17,6 +17,7 @@ import './Calc.scss'
 import Counter from './Counter'
 import useTitle from './hooks/useTitle'
 import useLocalStorage from './hooks/useLocalStorage'
+import getWeather from './utils/getWeather'
 
 type FormValues = {
 	weight: string
@@ -33,13 +34,14 @@ type Props = {
 export default function Calc({ isMetric }: Props) {
 	const { t } = useTranslation()
 	const [result, setResult] = useState<number | null>(null)
+	const [weatherLoading, setWeatherLoading] = useState(false)
 
 	const [savedValues, setSavedValues] = useLocalStorage<FormValues>('calcValues')
 
 	const validatePositive = (value: string) =>
 		Number(value) > 0 ? undefined : t('positive number required')
 
-	const { register, handleSubmit, errors } = useForm<FormValues>({
+	const { register, handleSubmit, errors, setValue, setError } = useForm<FormValues>({
 		defaultValues: savedValues,
 	})
 
@@ -75,6 +77,33 @@ export default function Calc({ isMetric }: Props) {
 		setResult(Math.max(isMetric ? km : new Qty(km, 'km').to('miles').scalar, 0))
 
 		setSavedValues(form)
+	}
+
+	async function loadWeather() {
+		try {
+			setWeatherLoading(true)
+
+			if (!navigator.geolocation) {
+				throw new Error('Geolocation is not supported by your browser')
+			}
+
+			const position = await new Promise<Position>((resolve, reject) =>
+				navigator.geolocation.getCurrentPosition(resolve, reject),
+			)
+
+			const { dataseries } = await getWeather(position)
+
+			const { temp2m } = dataseries[0]
+			setValue(
+				'temperature',
+				String(isMetric ? temp2m : new Qty(temp2m, 'tempC').to('tempF').toPrec(1).scalar),
+			)
+		} catch (err) {
+			console.error(err)
+			setError('temperature', 'weather-error', t('error loading weather'))
+		} finally {
+			setWeatherLoading(false)
+		}
 	}
 
 	return (
@@ -133,9 +162,19 @@ export default function Calc({ isMetric }: Props) {
 							placeholder={isMetric ? '20' : '70'}
 							invalid={Boolean(errors.temperature)}
 							innerRef={register({ required: t('required')! })}
+							readOnly={weatherLoading}
 						/>
 						<InputGroupAddon addonType="append">
-							<InputGroupText>°{isMetric ? 'C' : 'F'}</InputGroupText>
+							<InputGroupText className="p-0">
+								<Button
+									className="location-btn"
+									title={t('Get weather from my location')}
+									onClick={loadWeather}
+								>
+									<span className={weatherLoading ? 'loading' : undefined}>◉</span> °
+									{isMetric ? 'C' : 'F'}
+								</Button>
+							</InputGroupText>
 						</InputGroupAddon>
 						{errors.temperature && (
 							<FormFeedback>{errors.temperature.message}</FormFeedback>
