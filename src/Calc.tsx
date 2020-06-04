@@ -33,6 +33,9 @@ export default function Calc() {
 		return saved ? JSON.parse(saved) : undefined
 	})
 
+	const validatePositive = (value: string) =>
+		Number(value) > 0 ? undefined : t('positive number required')
+
 	const { register, handleSubmit, errors } = useForm<FormValues>({
 		defaultValues: savedValues,
 	})
@@ -48,6 +51,8 @@ export default function Calc() {
 	useTitle(title)
 
 	function onSubmit({ weight, chargesNum, temperature, battery, speed }: FormValues) {
+		// Формула позаимствована отсюда
+		// https://odno-koleso.com/kalkulyator-probega
 		const km = Math.round(
 			((437.52 / Number(weight) - Number(chargesNum) * 0.001206) *
 				((Number(temperature) * 0.156233 + 15.625) / 10.938) *
@@ -56,7 +61,7 @@ export default function Calc() {
 				100,
 		)
 
-		setResult(Math.round(km))
+		setResult(Math.max(km, 0))
 
 		setSavedValues({
 			weight,
@@ -80,7 +85,10 @@ export default function Calc() {
 							id="weight"
 							placeholder="75"
 							invalid={Boolean(errors.weight)}
-							innerRef={register({ required: t('required')! })}
+							innerRef={register({
+								required: t('required')!,
+								validate: validatePositive,
+							})}
 						/>
 						<InputGroupAddon addonType="append">
 							<InputGroupText>{t('kg')}</InputGroupText>
@@ -98,7 +106,10 @@ export default function Calc() {
 							id="battery"
 							placeholder="500"
 							invalid={Boolean(errors.battery)}
-							innerRef={register({ required: t('required')! })}
+							innerRef={register({
+								required: t('required')!,
+								validate: validatePositive,
+							})}
 						/>
 						<InputGroupAddon addonType="append">
 							<InputGroupText>{t('W⋅h')}</InputGroupText>
@@ -135,7 +146,7 @@ export default function Calc() {
 						id="chargesNum"
 						placeholder="10"
 						invalid={Boolean(errors.chargesNum)}
-						innerRef={register({ required: t('required')! })}
+						innerRef={register({ required: t('required')!, validate: validatePositive })}
 					/>
 					{errors.chargesNum && <FormFeedback>{errors.chargesNum.message}</FormFeedback>}
 				</FormGroup>
