@@ -91,12 +91,15 @@ export default function Calc({ isMetric }: Props) {
 				navigator.geolocation.getCurrentPosition(resolve, reject),
 			)
 
-			const { dataseries } = await getWeather(position)
+			const { main } = await getWeather(position)
 
-			const { temp2m } = dataseries[0]
 			setValue(
 				'temperature',
-				String(isMetric ? temp2m : new Qty(temp2m, 'tempC').to('tempF').toPrec(1).scalar),
+				String(
+					isMetric
+						? Math.round(main.temp)
+						: new Qty(main.temp, 'tempC').to('tempF').toPrec(1).scalar,
+				),
 			)
 		} catch (err) {
 			console.error(err)
@@ -119,6 +122,7 @@ export default function Calc({ isMetric }: Props) {
 							id="weight"
 							placeholder={isMetric ? '75' : '165'}
 							invalid={Boolean(errors.weight)}
+							disabled={weatherLoading}
 							innerRef={register({
 								required: t('required')!,
 								validate: validatePositive,

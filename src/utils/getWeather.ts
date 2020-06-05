@@ -1,32 +1,50 @@
-type WeatherResponse = {
-	dataseries: {
-		cloudcover: number
-		lifted_index: number
-		prec_type: string
-		rh2m: number
-		seeing: number
-		temp2m: number
-		timepoint: number
-		transparency: number
-	}[]
+type WeatherError = { cod: number; message: string }
+
+type WeatherData = {
+	cod: 200
+	main: {
+		temp: number
+		feels_like: number
+		temp_min: number
+		temp_max: number
+		pressure: number
+		humidity: number
+	}
+	wind: {
+		speed: number
+		deg: number
+	}
+	name: string
 }
 
-export default async function getWeather(position: Position) {
-	const weatcherAPI = new URL('http://www.7timer.info/bin/astro.php')
-	weatcherAPI.searchParams.append('lon', String(position.coords.longitude))
-	weatcherAPI.searchParams.append('lat', String(position.coords.latitude))
-	weatcherAPI.searchParams.append('ac', '0')
-	weatcherAPI.searchParams.append('unit', 'metric')
-	weatcherAPI.searchParams.append('output', 'json')
-	weatcherAPI.searchParams.append('tzshift', '0')
+const isResponseError = (data: WeatherError | WeatherData): data is WeatherError =>
+	data.cod !== 200
 
-	const response = await fetch(weatcherAPI.toString())
+export default async function getWeather(position: Position) {
+	if (!process.env.REACT_APP_OPENWEATHER_KEY) {
+		throw new Error('Env REACT_APP_OPENWEATHER_KEY not set')
+	}
+
+	const searchParams = new URLSearchParams({
+		lat: String(position.coords.latitude),
+		lon: String(position.coords.longitude),
+		units: 'metric',
+		appid: process.env.REACT_APP_OPENWEATHER_KEY,
+	})
+
+	const response = await fetch(
+		`https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
+	)
 
 	if (!response.ok) {
 		throw new Error(`Request to ${response.url} failed (${response.status})`)
 	}
 
-	const json: WeatherResponse = await response.json()
+	const json: WeatherData | WeatherError = await response.json()
+
+	if (isResponseError(json)) {
+		throw new Error(`Request to ${response.url} failed (${json.message})`)
+	}
 
 	return json
 }
