@@ -1,6 +1,6 @@
-type WeatherError = { cod: number; message: string }
+export type WeatherError = { cod: number; message: string }
 
-type WeatherData = {
+export type WeatherData = {
 	cod: 200
 	main: {
 		temp: number
