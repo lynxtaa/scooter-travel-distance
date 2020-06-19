@@ -103,7 +103,10 @@ export default function Calc({ isMetric }: Props) {
 			)
 		} catch (err) {
 			console.error(err)
-			setError('temperature', 'weather-error', t('error loading weather'))
+			setError('temperature', {
+				type: 'weather-error',
+				message: t('error loading weather'),
+			})
 		} finally {
 			setWeatherLoading(false)
 		}
