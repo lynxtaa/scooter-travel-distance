@@ -8,6 +8,11 @@ import { server } from './test/server'
 
 beforeAll(() => server.listen())
 
-afterEach(() => server.resetHandlers())
+afterEach(() => {
+	sessionStorage.clear()
+	localStorage.clear()
+
+	server.resetHandlers()
+})
 
 afterAll(() => server.close())

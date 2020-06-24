@@ -3,10 +3,8 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import Calc from './Calc'
-
-afterEach(() => {
-	localStorage.clear()
-})
+import { server, rest } from './test/server'
+import { WeatherData } from './utils/getWeather'
 
 test('clicking "Calculate" shows result for valid form', async () => {
 	render(<Calc isMetric />)
@@ -37,6 +35,26 @@ test('clicking "Calculate" shows result for valid form', async () => {
 
 test('clicking "Get weather from my location" loads temperature', async () => {
 	render(<Calc isMetric />)
+
+	server.use(
+		rest.get('https://api.openweathermap.org/data/2.5/weather', (req, res, ctx) => {
+			const data: WeatherData = {
+				cod: 200,
+				main: {
+					temp: 15,
+					feels_like: 18,
+					temp_min: 12,
+					temp_max: 20,
+					pressure: 700,
+					humidity: 10,
+				},
+				wind: { speed: 3, deg: 30 },
+				name: 'St. Petersburg',
+			}
+
+			return res(ctx.json(data))
+		}),
+	)
 
 	const geolocation: Geolocation = {
 		clearWatch: jest.fn(),
