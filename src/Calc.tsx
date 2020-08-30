@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
-	FormGroup,
+	FormErrorMessage,
+	FormLabel,
+	FormControl,
 	Input,
-	Label,
-	FormFeedback,
-	Button,
 	InputGroup,
-	InputGroupAddon,
-	InputGroupText,
-} from 'reactstrap'
+	InputRightAddon,
+	Button,
+	Box,
+	Spinner,
+	Select,
+	Heading,
+	Flex,
+	Stack,
+} from '@chakra-ui/core'
 import Qty from 'js-quantities'
 
-import './Calc.scss'
-import Counter from './Counter'
+import Counter from './components/Counter'
 import useTitle from './hooks/useTitle'
 import useLocalStorage from './hooks/useLocalStorage'
 import getWeather from './utils/getWeather'
@@ -114,122 +118,118 @@ export default function Calc({ isMetric }: Props) {
 
 	return (
 		<div className="Calc">
-			<h3 className="mb-4">{title}</h3>
+			<Heading as="h1" fontSize="1.8em" fontWeight="normal" mb={4}>
+				{title}
+			</Heading>
+
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormGroup>
-					<Label for="weight">{t("Rider's Weight")}</Label>
-					<InputGroup>
-						<Input
-							type="number"
-							name="weight"
-							id="weight"
-							placeholder={isMetric ? '75' : '165'}
-							invalid={Boolean(errors.weight)}
-							disabled={weatherLoading}
-							innerRef={register({
-								required: t('required')!,
-								validate: validatePositive,
-							})}
-						/>
-						<InputGroupAddon addonType="append">
-							<InputGroupText>{t(isMetric ? 'kg' : 'lbs')}</InputGroupText>
-						</InputGroupAddon>
-						{errors.weight && <FormFeedback>{errors.weight.message}</FormFeedback>}
-					</InputGroup>
-				</FormGroup>
+				<Stack spacing={4}>
+					<FormControl isInvalid={Boolean(errors.weight)}>
+						<FormLabel htmlFor="weight">{t("Rider's Weight")}</FormLabel>
+						<InputGroup>
+							<Input
+								type="number"
+								name="weight"
+								id="weight"
+								placeholder={isMetric ? '75' : '165'}
+								borderTopRightRadius="none"
+								borderBottomRightRadius="none"
+								ref={register({
+									required: t('required')!,
+									validate: validatePositive,
+								})}
+							/>
+							<InputRightAddon children={t(isMetric ? 'kg' : 'lbs')} />
+						</InputGroup>
+						<FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
+					</FormControl>
 
-				<FormGroup>
-					<Label for="battery">{t('Battery Capacity')}</Label>
-					<InputGroup>
-						<Input
-							type="number"
-							name="battery"
-							id="battery"
-							placeholder="500"
-							invalid={Boolean(errors.battery)}
-							innerRef={register({
-								required: t('required')!,
-								validate: validatePositive,
-							})}
-						/>
-						<InputGroupAddon addonType="append">
-							<InputGroupText>{t('W⋅h')}</InputGroupText>
-						</InputGroupAddon>
-						{errors.battery && <FormFeedback>{errors.battery.message}</FormFeedback>}
-					</InputGroup>
-				</FormGroup>
+					<FormControl isInvalid={Boolean(errors.battery)}>
+						<FormLabel htmlFor="battery">{t('Battery Capacity')}</FormLabel>
+						<InputGroup>
+							<Input
+								type="number"
+								name="battery"
+								id="battery"
+								placeholder="500"
+								borderTopRightRadius="none"
+								borderBottomRightRadius="none"
+								ref={register({
+									required: t('required')!,
+									validate: validatePositive,
+								})}
+							/>
+							<InputRightAddon children={t('W⋅h')} />
+						</InputGroup>
+						<FormErrorMessage>{errors.battery?.message}</FormErrorMessage>
+					</FormControl>
 
-				<FormGroup>
-					<Label for="temperature">{t('Temperature Outside')}</Label>
-					<InputGroup>
-						<Input
-							type="number"
-							name="temperature"
-							id="temperature"
-							placeholder={isMetric ? '20' : '70'}
-							invalid={Boolean(errors.temperature)}
-							innerRef={register({ required: t('required')! })}
-							readOnly={weatherLoading}
-						/>
-						<InputGroupAddon addonType="append">
-							<InputGroupText className="p-0">
+					<FormControl isInvalid={Boolean(errors.temperature)}>
+						<FormLabel htmlFor="temperature">{t('Temperature Outside')}</FormLabel>
+						<InputGroup>
+							<Input
+								type="number"
+								name="temperature"
+								id="temperature"
+								borderTopRightRadius="none"
+								borderBottomRightRadius="none"
+								placeholder={isMetric ? '20' : '70'}
+								ref={register({ required: t('required')! })}
+								isDisabled={weatherLoading}
+							/>
+							<InputRightAddon padding={0}>
 								<Button
-									className="location-btn"
 									title={t('Get weather from my location')}
 									onClick={loadWeather}
+									padding="0.375rem 0.75rem"
+									border="none"
 								>
-									<span className={weatherLoading ? 'loading' : undefined}>◉</span> °
-									{isMetric ? 'C' : 'F'}
+									{weatherLoading ? <Spinner /> : `◉ °${isMetric ? 'C' : 'F'}`}
 								</Button>
-							</InputGroupText>
-						</InputGroupAddon>
-						{errors.temperature && (
-							<FormFeedback>{errors.temperature.message}</FormFeedback>
-						)}
-					</InputGroup>
-				</FormGroup>
+							</InputRightAddon>
+						</InputGroup>
+						<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
+					</FormControl>
 
-				<FormGroup>
-					<Label for="chargesNum">{t('Full battery charges count')}</Label>
-					<Input
-						type="number"
-						name="chargesNum"
-						id="chargesNum"
-						placeholder="10"
-						invalid={Boolean(errors.chargesNum)}
-						innerRef={register({ required: t('required')!, validate: validatePositive })}
-					/>
-					{errors.chargesNum && <FormFeedback>{errors.chargesNum.message}</FormFeedback>}
-				</FormGroup>
+					<FormControl isInvalid={Boolean(errors.chargesNum)}>
+						<FormLabel htmlFor="chargesNum">{t('Full battery charges count')}</FormLabel>
+						<Input
+							type="number"
+							name="chargesNum"
+							id="chargesNum"
+							placeholder="10"
+							ref={register({ required: t('required')!, validate: validatePositive })}
+						/>
+						<FormErrorMessage>{errors.chargesNum?.message}</FormErrorMessage>
+					</FormControl>
 
-				<FormGroup>
-					<Label for="speed">{t('Speed')}</Label>
-					<Input
-						type="select"
-						name="speed"
-						id="speed"
-						invalid={Boolean(errors.speed)}
-						innerRef={register({ required: t('required')! })}
-						defaultValue=""
-					>
-						<option disabled value="" hidden></option>
-						<option value="1">{t('Slow ride')}</option>
-						<option value="0.81">{t('Medium speed ride')}</option>
-						<option value="0.54">{t('Fast ride')}</option>
-					</Input>
-					{errors.speed && <FormFeedback>{errors.speed.message}</FormFeedback>}
-				</FormGroup>
+					<FormControl isInvalid={Boolean(errors.speed)}>
+						<FormLabel htmlFor="speed">{t('Speed')}</FormLabel>
+						<Select
+							name="speed"
+							id="speed"
+							ref={register({ required: t('required')! })}
+							defaultValue=""
+						>
+							<option disabled value="" hidden></option>
+							<option value="1">{t('Slow ride')}</option>
+							<option value="0.81">{t('Medium speed ride')}</option>
+							<option value="0.54">{t('Fast ride')}</option>
+						</Select>
+						<FormErrorMessage>{errors.speed?.message}</FormErrorMessage>
+					</FormControl>
+				</Stack>
 
-				<div className="d-flex align-items-center mt-4">
+				<Flex alignItems="center" mt={4}>
 					{typeof result === 'number' && (
-						<div className="result">
+						<Box fontSize="1.3em">
 							{t('Distance')}: <Counter>{result}</Counter> {t(isMetric ? 'km' : 'miles')}
-						</div>
+						</Box>
 					)}
-					<Button type="submit" className="ml-auto">
+					<Button type="submit" marginLeft="auto">
 						{t('Calculate')}
 					</Button>
-				</div>
+				</Flex>
 			</form>
 		</div>
 	)

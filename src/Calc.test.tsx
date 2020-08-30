@@ -1,10 +1,18 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import Calc from './Calc'
 import { server, rest } from './test/server'
 import { WeatherData } from './utils/getWeather'
+import { ThemeProvider } from '@chakra-ui/core'
+
+const withProviders = ({ children }: { children?: React.ReactNode }) => (
+	<ThemeProvider>{children}</ThemeProvider>
+)
+
+const render = (el: React.ReactElement, options?: RenderOptions) =>
+	_render(el, { wrapper: withProviders, ...options })
 
 test('clicking "Calculate" shows result for valid form', async () => {
 	render(<Calc isMetric />)
