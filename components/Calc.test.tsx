@@ -3,12 +3,16 @@ import { render as _render, screen, waitFor, RenderOptions } from '@testing-libr
 import userEvent from '@testing-library/user-event'
 
 import Calc from './Calc'
-import { server, rest } from './test/server'
-import { WeatherData } from './utils/getWeather'
+import { server, rest } from '../jest/server'
+import { WeatherData } from '../lib/weather'
 import { ThemeProvider } from '@chakra-ui/core'
+import { I18nextProvider } from 'react-i18next'
+import i18n from '../lib/i18n'
 
 const withProviders = ({ children }: { children?: React.ReactNode }) => (
-	<ThemeProvider>{children}</ThemeProvider>
+	<ThemeProvider>
+		<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+	</ThemeProvider>
 )
 
 const render = (el: React.ReactElement, options?: RenderOptions) =>
@@ -38,14 +42,12 @@ test('clicking "Calculate" shows result for valid form', async () => {
 
 	userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
 
-	expect(await screen.findByText(/Distance/i)).toBeInTheDocument()
+	expect(await screen.findByText('43')).toBeInTheDocument()
 })
 
 test('clicking "Get weather from my location" loads temperature', async () => {
-	render(<Calc isMetric />)
-
 	server.use(
-		rest.get('https://api.openweathermap.org/data/2.5/weather', (req, res, ctx) => {
+		rest.get('/api/weather', (req, res, ctx) => {
 			const data: WeatherData = {
 				cod: 200,
 				main: {
@@ -63,6 +65,8 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 			return res(ctx.json(data))
 		}),
 	)
+
+	render(<Calc isMetric />)
 
 	const geolocation: Geolocation = {
 		clearWatch: jest.fn(),

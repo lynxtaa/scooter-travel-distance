@@ -18,6 +18,5 @@
 	"km": "км",
 	"miles": "миль",
 	"Get weather from my location": "Получить погоду на основе моего местоположения",
-	"error loading weather": "ошибка загрузки погоды",
-	"A new version is available! Reload?": "Доступна новая версия приложения. Обновить страницу?"
+	"error loading weather": "ошибка загрузки погоды"
 }

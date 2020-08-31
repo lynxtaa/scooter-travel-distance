@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import {
 	FormErrorMessage,
 	FormLabel,
@@ -17,11 +16,13 @@ import {
 	Stack,
 } from '@chakra-ui/core'
 import Qty from 'js-quantities'
+import { useTranslation } from 'react-i18next'
 
-import Counter from './components/Counter'
-import useTitle from './hooks/useTitle'
+import Counter from './Counter'
 import useLocalStorage from './hooks/useLocalStorage'
-import getWeather from './utils/getWeather'
+import fetchApi from './utils/fetchApi'
+import { WeatherData } from '../lib/weather'
+import Head from 'next/head'
 
 type FormValues = {
 	weight: string
@@ -45,13 +46,13 @@ export default function Calc({ isMetric }: Props) {
 	const validatePositive = (value: string) =>
 		Number(value) > 0 ? undefined : t('positive number required')
 
-	const { register, handleSubmit, errors, setValue, setError } = useForm<FormValues>({
-		defaultValues: savedValues,
-	})
+	const { register, handleSubmit, errors, setValue, setError, formState } = useForm<
+		FormValues
+	>({ defaultValues: savedValues })
+
+	const { isSubmitting } = formState
 
 	const title = t('Scooter Travel Distance Calculator')
-
-	useTitle(title)
 
 	useEffect(() => {
 		setResult(null)
@@ -70,17 +71,19 @@ export default function Calc({ isMetric }: Props) {
 
 		// Формула позаимствована отсюда
 		// https://odno-koleso.com/kalkulyator-probega
-		const km = Math.round(
-			((437.52 / weight - chargesNum * 0.001206) *
-				((temperature * 0.156233 + 15.625) / 10.938) *
-				battery *
-				speed) /
-				100,
+		const km = Math.max(
+			Math.round(
+				((437.52 / weight - chargesNum * 0.001206) *
+					((temperature * 0.156233 + 15.625) / 10.938) *
+					battery *
+					speed) /
+					100,
+			),
+			0,
 		)
 
-		setResult(Math.max(isMetric ? km : new Qty(km, 'km').to('miles').scalar, 0))
-
 		setSavedValues(form)
+		setResult(isMetric ? km : new Qty(km, 'km').to('miles').scalar)
 	}
 
 	async function loadWeather() {
@@ -95,7 +98,18 @@ export default function Calc({ isMetric }: Props) {
 				navigator.geolocation.getCurrentPosition(resolve, reject),
 			)
 
-			const { main } = await getWeather(position)
+			const searchParams = new URLSearchParams({
+				latitude: String(position.coords.latitude),
+				longitude: String(position.coords.longitude),
+			})
+
+			const result = await fetchApi<WeatherData>(`/api/weather?${searchParams}`)
+
+			if ('error' in result) {
+				throw result.error
+			}
+
+			const { main } = result.data
 
 			setValue(
 				'temperature',
@@ -117,7 +131,10 @@ export default function Calc({ isMetric }: Props) {
 	}
 
 	return (
-		<div className="Calc">
+		<Box className="Calc">
+			<Head>
+				<title>{title}</title>
+			</Head>
 			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={4}>
 				{title}
 			</Heading>
@@ -225,11 +242,11 @@ export default function Calc({ isMetric }: Props) {
 							{t('Distance')}: <Counter>{result}</Counter> {t(isMetric ? 'km' : 'miles')}
 						</Box>
 					)}
-					<Button type="submit" marginLeft="auto">
+					<Button type="submit" marginLeft="auto" isLoading={isSubmitting}>
 						{t('Calculate')}
 					</Button>
 				</Flex>
 			</form>
-		</div>
+		</Box>
 	)
 }

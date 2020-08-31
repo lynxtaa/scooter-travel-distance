@@ -34,45 +34,45 @@
     "@types/jest": "^24.9.1",
     "@types/js-quantities": "^1.6.2",
     "@types/node": "^12.12.47",
+    "@types/node-fetch": "^2.5.7",
     "@types/react": "^16.9.38",
     "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "babel-eslint": "^10.1.0",
     "emotion-theming": "^10.0.27",
+    "eslint": "^6.8.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^4.7.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^2.5.1",
     "husky": "^4.2.5",
     "i18next": "^19.5.0",
     "i18next-browser-languagedetector": "^5.0.0",
-    "jest-environment-jsdom-fifteen": "^1.0.2",
+    "is-ci-cli": "^2.1.2",
+    "jest": "^26.1.0",
     "js-quantities": "^1.7.5",
     "msw": "^0.20.0",
+    "next": "^9.5.2",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.0.0-rc.5",
-    "react-i18next": "^11.7.0",
-    "react-scripts": "3.4.1",
-    "react-spring": "^9.0.0-rc.3",
-    "typescript": "^3.9.5"
+    "react-i18next": "^11.7.2",
+    "react-spring": "^8.0.27",
+    "typescript": "^3.9.5",
+    "whatwg-fetch": "^3.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env jest-environment-jsdom-fifteen",
-    "eject": "react-scripts eject",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "is-ci test:coverage test:watch",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "serve": "npx serve -s build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

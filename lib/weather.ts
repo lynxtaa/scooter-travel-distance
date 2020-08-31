@@ -1,7 +1,5 @@
-export type WeatherError = { cod: number; message: string }
-
 export type WeatherData = {
-	cod: 200
+	cod: number
 	main: {
 		temp: number
 		feels_like: number
@@ -17,19 +15,30 @@ export type WeatherData = {
 	name: string
 }
 
+export type WeatherError = {
+	cod: number
+	message: string
+}
+
 const isResponseError = (data: WeatherError | WeatherData): data is WeatherError =>
 	data.cod !== 200
 
-export default async function getWeather(position: Position) {
-	if (!process.env.REACT_APP_OPENWEATHER_KEY) {
-		throw new Error('Env REACT_APP_OPENWEATHER_KEY not set')
+export async function getWeather({
+	latitude,
+	longitude,
+}: {
+	latitude: number
+	longitude: number
+}): Promise<WeatherData> {
+	if (!process.env.OPENWEATHER_KEY) {
+		throw new Error('Env OPENWEATHER_KEY not set')
 	}
 
 	const searchParams = new URLSearchParams({
-		lat: String(position.coords.latitude),
-		lon: String(position.coords.longitude),
+		lat: String(latitude),
+		lon: String(longitude),
 		units: 'metric',
-		appid: process.env.REACT_APP_OPENWEATHER_KEY,
+		appid: process.env.OPENWEATHER_KEY,
 	})
 
 	const response = await fetch(
@@ -40,11 +49,11 @@ export default async function getWeather(position: Position) {
 		throw new Error(`Request to ${response.url} failed (${response.status})`)
 	}
 
-	const json: WeatherData | WeatherError = await response.json()
+	const data = await response.json()
 
-	if (isResponseError(json)) {
-		throw new Error(`Request to ${response.url} failed (${json.message})`)
+	if (isResponseError(data)) {
+		throw new Error(`Request to ${response.url} failed (${data.message})`)
 	}
 
-	return json
+	return data
 }
