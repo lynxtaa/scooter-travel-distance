@@ -16,7 +16,7 @@ export default function App() {
 			minHeight="100vh"
 			height="100%"
 			margin="0 auto"
-			padding="1rem"
+			padding={4}
 		>
 			<Stack isInline spacing={3} justify="right" mb={3}>
 				<MetricImperialSwitcher isMetric={isMetric} setIsMetric={setIsMetric} />

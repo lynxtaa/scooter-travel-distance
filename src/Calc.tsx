@@ -118,7 +118,7 @@ export default function Calc({ isMetric }: Props) {
 
 	return (
 		<div className="Calc">
-			<Heading as="h1" fontSize="1.8em" fontWeight="normal" mb={4}>
+			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={4}>
 				{title}
 			</Heading>
 
@@ -181,7 +181,6 @@ export default function Calc({ isMetric }: Props) {
 								<Button
 									title={t('Get weather from my location')}
 									onClick={loadWeather}
-									padding="0.375rem 0.75rem"
 									border="none"
 								>
 									{weatherLoading ? <Spinner /> : `◉ °${isMetric ? 'C' : 'F'}`}
@@ -222,7 +221,7 @@ export default function Calc({ isMetric }: Props) {
 
 				<Flex alignItems="center" mt={4}>
 					{typeof result === 'number' && (
-						<Box fontSize="1.3em">
+						<Box fontSize="xl">
 							{t('Distance')}: <Counter>{result}</Counter> {t(isMetric ? 'km' : 'miles')}
 						</Box>
 					)}
