@@ -6,6 +6,8 @@ import '@testing-library/jest-dom/extend-expect'
 
 import { server } from './server'
 
+jest.mock('../components/Counter')
+
 beforeAll(() => server.listen())
 
 afterEach(() => {
