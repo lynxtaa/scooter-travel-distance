@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSpring, animated, config } from 'react-spring'
 
 type Props = {

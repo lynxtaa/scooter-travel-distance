@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getWeather, WeatherData } from '../../lib/weather'
 
-export default async function (req: NextApiRequest, res: NextApiResponse<WeatherData>) {
+export default async function weather(
+	req: NextApiRequest,
+	res: NextApiResponse<WeatherData>,
+) {
 	if (req.method !== 'GET') {
 		return res.status(405).end()
 	}

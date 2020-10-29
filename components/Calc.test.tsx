@@ -1,22 +1,24 @@
-import React from 'react'
 import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
+import { I18nProvider } from 'next-localization'
 import userEvent from '@testing-library/user-event'
+import { ThemeProvider } from '@chakra-ui/core'
 
 import Calc from './Calc'
 import { server, rest } from '../jest/server'
 import { WeatherData } from '../lib/weather'
-import { ThemeProvider } from '@chakra-ui/core'
-import { I18nextProvider } from 'react-i18next'
-import i18n from '../lib/i18n'
-
-const withProviders = ({ children }: { children?: React.ReactNode }) => (
-	<ThemeProvider>
-		<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
-	</ThemeProvider>
-)
+import langEn from '../locales/en.json'
 
 const render = (el: React.ReactElement, options?: RenderOptions) =>
-	_render(el, { wrapper: withProviders, ...options })
+	_render(el, {
+		wrapper: ({ children }) => (
+			<ThemeProvider>
+				<I18nProvider locale="en" lngDict={langEn}>
+					{children as any}
+				</I18nProvider>
+			</ThemeProvider>
+		),
+		...options,
+	})
 
 test('clicking "Calculate" shows result for valid form', async () => {
 	render(<Calc isMetric />)

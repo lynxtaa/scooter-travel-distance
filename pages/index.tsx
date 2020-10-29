@@ -1,19 +1,15 @@
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
-import React from 'react'
+import { StrictMode } from 'react'
 import { ThemeProvider, CSSReset, DarkMode } from '@chakra-ui/core'
 import { Global, css } from '@emotion/core'
+import { GetStaticProps } from 'next'
 
+import App from '../components/App'
 import theme from '../components/theme'
-
-// Disable SSR because of problems with i18n
-const DynamicAppWithNoSSR = dynamic(() => import('../components/App'), {
-	ssr: false,
-})
 
 export default function Home() {
 	return (
-		<React.StrictMode>
+		<StrictMode>
 			<ThemeProvider theme={theme}>
 				<Global
 					styles={css`
@@ -35,9 +31,17 @@ export default function Home() {
 						<meta name="theme-color" content="#ffffff" />
 						<link rel="manifest" href="/manifest.json" />
 					</Head>
-					<DynamicAppWithNoSSR />
+					<App />
 				</DarkMode>
 			</ThemeProvider>
-		</React.StrictMode>
+		</StrictMode>
 	)
+}
+
+export const getStaticProps: GetStaticProps = async function ({ locale }) {
+	const { default: lngDict = {} } = await import(`../locales/${locale}.json`)
+
+	return {
+		props: { lngDict },
+	}
 }

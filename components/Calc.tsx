@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
 	FormErrorMessage,
@@ -16,7 +16,7 @@ import {
 	Stack,
 } from '@chakra-ui/core'
 import Qty from 'js-quantities'
-import { useTranslation } from 'react-i18next'
+import { useI18n } from 'next-localization'
 
 import Counter from './Counter'
 import useLocalStorage from './hooks/useLocalStorage'
@@ -37,7 +37,7 @@ type Props = {
 }
 
 export default function Calc({ isMetric }: Props) {
-	const { t } = useTranslation()
+	const { t } = useI18n()
 	const [result, setResult] = useState<number | null>(null)
 	const [weatherLoading, setWeatherLoading] = useState(false)
 
