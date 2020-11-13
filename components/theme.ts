@@ -1,7 +1,8 @@
-import { DefaultTheme, theme } from '@chakra-ui/core'
+import { theme } from '@chakra-ui/react'
 
-const customTheme: DefaultTheme = {
+const customTheme: typeof theme = {
 	...theme,
+	config: { initialColorMode: 'dark' },
 	colors: {
 		...theme.colors,
 		red: {

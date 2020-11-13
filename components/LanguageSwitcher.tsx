@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/core'
+import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 enum Language {

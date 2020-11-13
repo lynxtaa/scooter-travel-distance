@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/core'
+import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/react'
 
 type Props = {
 	isMetric: boolean

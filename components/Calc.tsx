@@ -14,7 +14,7 @@ import {
 	Heading,
 	Flex,
 	Stack,
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import Qty from 'js-quantities'
 import { useI18n } from 'next-localization'
 

@@ -1,4 +1,4 @@
-import { Box, Stack } from '@chakra-ui/core'
+import { Box, Stack } from '@chakra-ui/react'
 
 import Calc from './Calc'
 import LanguageSwitcher from './LanguageSwitcher'

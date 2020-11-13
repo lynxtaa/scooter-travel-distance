@@ -25,9 +25,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@chakra-ui/core": "0.8.0",
-    "@emotion/core": "10.1.1",
-    "@emotion/styled": "10.0.27",
+    "@chakra-ui/icons": "1.0.0",
+    "@chakra-ui/react": "1.0.0",
+    "@emotion/react": "11.0.0",
+    "@emotion/styled": "11.0.0",
     "@testing-library/jest-dom": "5.11.5",
     "@testing-library/react": "11.1.0",
     "@testing-library/user-event": "12.1.10",
@@ -40,7 +41,6 @@
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
     "babel-eslint": "10.1.0",
-    "emotion-theming": "10.0.27",
     "eslint": "7.12.1",
     "eslint-config-react-app": "6.0.0",
     "eslint-plugin-flowtype": "5.2.0",
@@ -48,6 +48,7 @@
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.2.0",
+    "framer-motion": "2.9.4",
     "husky": "4.3.0",
     "is-ci-cli": "2.1.2",
     "jest": "26.6.2",
@@ -70,6 +71,7 @@
     "start": "next start",
     "test": "is-ci test:coverage test:watch",
     "lint": "eslint --ext .tsx,.ts,.js components jest lib pages",
+    "check-types": "tsc --noEmit",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   }

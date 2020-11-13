@@ -1,7 +1,7 @@
 import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
 import { I18nProvider } from 'next-localization'
 import userEvent from '@testing-library/user-event'
-import { ThemeProvider } from '@chakra-ui/core'
+import { ChakraProvider } from '@chakra-ui/react'
 
 import Calc from './Calc'
 import { server, rest } from '../jest/server'
@@ -11,11 +11,11 @@ import langEn from '../locales/en.json'
 const render = (el: React.ReactElement, options?: RenderOptions) =>
 	_render(el, {
 		wrapper: ({ children }) => (
-			<ThemeProvider>
+			<ChakraProvider>
 				<I18nProvider locale="en" lngDict={langEn}>
 					{children as any}
 				</I18nProvider>
-			</ThemeProvider>
+			</ChakraProvider>
 		),
 		...options,
 	})
