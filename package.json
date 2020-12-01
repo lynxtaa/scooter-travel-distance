@@ -72,6 +72,8 @@
     "test": "is-ci test:coverage test:watch",
     "lint": "eslint --ext .tsx,.ts,.js components jest lib pages",
     "check-types": "tsc --noEmit",
+    "check-format": "npm run prettier -- --check",
+    "prettier": "prettier components jest lib locales pages *.{js,json,md}",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   }

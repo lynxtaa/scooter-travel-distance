@@ -46,9 +46,14 @@ export default function Calc({ isMetric }: Props) {
 	const validatePositive = (value: string) =>
 		Number(value) > 0 ? undefined : t('positive number required')
 
-	const { register, handleSubmit, errors, setValue, setError, formState } = useForm<
-		FormValues
-	>({ defaultValues: savedValues })
+	const {
+		register,
+		handleSubmit,
+		errors,
+		setValue,
+		setError,
+		formState,
+	} = useForm<FormValues>({ defaultValues: savedValues })
 
 	const { isSubmitting } = formState
 
@@ -94,7 +99,7 @@ export default function Calc({ isMetric }: Props) {
 				throw new Error('Geolocation is not supported by your browser')
 			}
 
-			const position = await new Promise<Position>((resolve, reject) =>
+			const position = await new Promise<GeolocationPosition>((resolve, reject) =>
 				navigator.geolocation.getCurrentPosition(resolve, reject),
 			)
 

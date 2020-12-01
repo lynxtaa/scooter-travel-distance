@@ -13,7 +13,9 @@ export default function Counter({ children }: Props) {
 
 	return (
 		<animated.span>
-			{number.interpolate((value: number) => Math.round(value).toLocaleString())}
+			{number.interpolate((value: unknown) =>
+				Math.round(value as number).toLocaleString(),
+			)}
 		</animated.span>
 	)
 }
