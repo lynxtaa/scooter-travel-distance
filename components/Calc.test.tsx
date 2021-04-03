@@ -23,19 +23,13 @@ const render = (el: React.ReactElement, options?: RenderOptions) =>
 test('clicking "Calculate" shows result for valid form', async () => {
 	render(<Calc isMetric />)
 
-	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
+	userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
 
-	await userEvent.type(
-		screen.getByRole('spinbutton', { name: 'Battery Capacity' }),
-		'500',
-	)
+	userEvent.type(screen.getByRole('spinbutton', { name: 'Battery Capacity' }), '500')
 
-	await userEvent.type(
-		screen.getByRole('spinbutton', { name: 'Temperature Outside' }),
-		'20',
-	)
+	userEvent.type(screen.getByRole('spinbutton', { name: 'Temperature Outside' }), '20')
 
-	await userEvent.type(
+	userEvent.type(
 		screen.getByRole('spinbutton', { name: 'Full battery charges count' }),
 		'10',
 	)

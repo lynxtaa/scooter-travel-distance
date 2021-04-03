@@ -49,13 +49,10 @@ export default function Calc({ isMetric }: Props) {
 	const {
 		register,
 		handleSubmit,
-		errors,
 		setValue,
 		setError,
-		formState,
+		formState: { isSubmitting, errors },
 	} = useForm<FormValues>({ defaultValues: savedValues })
-
-	const { isSubmitting } = formState
 
 	const title = t('Scooter Travel Distance Calculator')
 
@@ -151,12 +148,11 @@ export default function Calc({ isMetric }: Props) {
 						<InputGroup>
 							<Input
 								type="number"
-								name="weight"
 								id="weight"
 								placeholder={isMetric ? '75' : '165'}
 								borderTopRightRadius="none"
 								borderBottomRightRadius="none"
-								ref={register({
+								{...register('weight', {
 									required: t('required')!,
 									validate: validatePositive,
 								})}
@@ -171,12 +167,11 @@ export default function Calc({ isMetric }: Props) {
 						<InputGroup>
 							<Input
 								type="number"
-								name="battery"
 								id="battery"
 								placeholder="500"
 								borderTopRightRadius="none"
 								borderBottomRightRadius="none"
-								ref={register({
+								{...register('battery', {
 									required: t('required')!,
 									validate: validatePositive,
 								})}
@@ -191,13 +186,12 @@ export default function Calc({ isMetric }: Props) {
 						<InputGroup>
 							<Input
 								type="number"
-								name="temperature"
 								id="temperature"
 								borderTopRightRadius="none"
 								borderBottomRightRadius="none"
 								placeholder={isMetric ? '20' : '70'}
-								ref={register({ required: t('required')! })}
 								isDisabled={weatherLoading}
+								{...register('temperature', { required: t('required')! })}
 							/>
 							<InputRightAddon padding={0}>
 								<Button
@@ -216,10 +210,12 @@ export default function Calc({ isMetric }: Props) {
 						<FormLabel htmlFor="chargesNum">{t('Full battery charges count')}</FormLabel>
 						<Input
 							type="number"
-							name="chargesNum"
 							id="chargesNum"
 							placeholder="10"
-							ref={register({ required: t('required')!, validate: validatePositive })}
+							{...register('chargesNum', {
+								required: t('required')!,
+								validate: validatePositive,
+							})}
 						/>
 						<FormErrorMessage>{errors.chargesNum?.message}</FormErrorMessage>
 					</FormControl>
@@ -227,10 +223,9 @@ export default function Calc({ isMetric }: Props) {
 					<FormControl isInvalid={Boolean(errors.speed)}>
 						<FormLabel htmlFor="speed">{t('Speed')}</FormLabel>
 						<Select
-							name="speed"
 							id="speed"
-							ref={register({ required: t('required')! })}
 							defaultValue=""
+							{...register('speed', { required: t('required')! })}
 						>
 							<option disabled value="" hidden></option>
 							<option value="1">{t('Slow ride')}</option>
