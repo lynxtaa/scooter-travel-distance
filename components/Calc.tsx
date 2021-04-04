@@ -15,13 +15,18 @@ import {
 	Flex,
 	Stack,
 } from '@chakra-ui/react'
-import Qty from 'js-quantities'
 import { useI18n } from 'next-localization'
 
 import Counter from './Counter'
 import useLocalStorage from './hooks/useLocalStorage'
 import fetchApi from './utils/fetchApi'
 import { WeatherData } from '../lib/weather'
+import {
+	poundsToKg,
+	kmToMiles,
+	celsiusToFahrenheit,
+	fahrenheitToCelius,
+} from './utils/quantities'
 
 type FormValues = {
 	weight: string
@@ -60,11 +65,11 @@ export default function Calc({ isMetric }: Props) {
 	}, [isMetric])
 
 	function onSubmit(form: FormValues) {
-		const weight = isMetric ? +form.weight : new Qty(+form.weight, 'lbs').to('kg').scalar
+		const weight = isMetric ? +form.weight : poundsToKg(+form.weight)
 
 		const temperature = isMetric
 			? +form.temperature
-			: new Qty(+form.temperature, 'tempF').to('tempC').scalar
+			: fahrenheitToCelius(+form.temperature)
 
 		const chargesNum = +form.chargesNum
 		const battery = +form.battery
@@ -84,7 +89,7 @@ export default function Calc({ isMetric }: Props) {
 		)
 
 		setSavedValues(form)
-		setResult(isMetric ? km : new Qty(km, 'km').to('miles').scalar)
+		setResult(isMetric ? km : kmToMiles(km))
 	}
 
 	async function loadWeather() {
@@ -114,11 +119,7 @@ export default function Calc({ isMetric }: Props) {
 
 			setValue(
 				'temperature',
-				String(
-					isMetric
-						? Math.round(main.temp)
-						: new Qty(main.temp, 'tempC').to('tempF').toPrec(1).scalar,
-				),
+				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
 			)
 		} catch (err) {
 			console.error(err)
