@@ -1,12 +1,13 @@
-import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
-import { I18nProvider } from 'next-localization'
-import userEvent from '@testing-library/user-event'
 import { ChakraProvider } from '@chakra-ui/react'
+import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { I18nProvider } from 'next-localization'
 
-import Calc from './Calc'
 import { server, rest } from '../jest/server'
 import { WeatherData } from '../lib/weather'
 import langEn from '../locales/en.json'
+
+import Calc from './Calc'
 
 const render = (el: React.ReactElement, options?: RenderOptions) =>
 	_render(el, {

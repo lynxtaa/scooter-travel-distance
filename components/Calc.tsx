@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import {
 	FormErrorMessage,
 	FormLabel,
@@ -16,11 +14,14 @@ import {
 	Stack,
 } from '@chakra-ui/react'
 import { useI18n } from 'next-localization'
+import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { WeatherData } from '../lib/weather'
 
 import Counter from './Counter'
 import useLocalStorage from './hooks/useLocalStorage'
 import fetchApi from './utils/fetchApi'
-import { WeatherData } from '../lib/weather'
 import {
 	poundsToKg,
 	kmToMiles,
@@ -122,6 +123,7 @@ export default function Calc({ isMetric }: Props) {
 				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
 			)
 		} catch (err) {
+			// eslint-disable-next-line no-console
 			console.error(err)
 			setError('temperature', {
 				type: 'weather-error',

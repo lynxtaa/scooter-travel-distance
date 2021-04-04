@@ -1,8 +1,8 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { I18nProvider } from 'next-localization'
-import { useRouter } from 'next/router'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import theme from '../components/theme'
 
