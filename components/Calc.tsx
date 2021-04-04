@@ -22,7 +22,6 @@ import Counter from './Counter'
 import useLocalStorage from './hooks/useLocalStorage'
 import fetchApi from './utils/fetchApi'
 import { WeatherData } from '../lib/weather'
-import Head from 'next/head'
 
 type FormValues = {
 	weight: string
@@ -134,9 +133,6 @@ export default function Calc({ isMetric }: Props) {
 
 	return (
 		<Box className="Calc">
-			<Head>
-				<title>{title}</title>
-			</Head>
 			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={4}>
 				{title}
 			</Heading>

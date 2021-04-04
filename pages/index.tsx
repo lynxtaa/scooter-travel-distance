@@ -1,33 +1,19 @@
-import Head from 'next/head'
-import { StrictMode } from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
+import { useI18n } from 'next-localization'
+import { NextSeo } from 'next-seo'
 
 import App from '../components/App'
-import theme from '../components/theme'
 
 export default function Home() {
+	const { t } = useI18n()
+
+	const title = t('Scooter Travel Distance Calculator')
+
 	return (
-		<StrictMode>
-			<ChakraProvider resetCSS theme={theme}>
-				<Head>
-					<title>Scooter Travel Distance Calculator</title>
-					<meta charSet="utf-8" />
-					<meta name="viewport" content="width=device-width, initial-scale=1" />
-					<meta name="description" content="Scooter Travel Distance Calculator" />
-					<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-					<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-					<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-					<meta name="theme-color" content="#ffffff" />
-					<link rel="manifest" href="/manifest.json" />
-					<meta
-						name="google-site-verification"
-						content="3Tt_9iZaHQLOItmIIIDcwYxxdijZmUtwOKttlBOjY8o"
-					/>
-				</Head>
-				<App />
-			</ChakraProvider>
-		</StrictMode>
+		<>
+			<NextSeo title={title} description={title} />
+			<App />
+		</>
 	)
 }
 
