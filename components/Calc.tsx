@@ -136,7 +136,7 @@ export default function Calc({ isMetric }: Props) {
 
 	return (
 		<Box className="Calc">
-			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={4}>
+			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={6}>
 				{title}
 			</Heading>
 
