@@ -1,10 +1,8 @@
-import { theme } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react'
 
-const customTheme: typeof theme = {
-	...theme,
+export const theme = extendTheme({
 	config: { initialColorMode: 'dark' },
 	colors: {
-		...theme.colors,
 		red: {
 			50: '#ffe6ee',
 			100: '#f6becc',
@@ -18,6 +16,12 @@ const customTheme: typeof theme = {
 			900: '#1d0009',
 		},
 	},
-}
-
-export default customTheme
+	styles: {
+		global: {
+			':focus:not(:focus-visible)': {
+				boxShadow: 'none !important',
+				outline: 'none !important',
+			},
+		},
+	},
+})

@@ -4,7 +4,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import theme from '../components/theme'
+import { theme } from '../components/theme'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter()
