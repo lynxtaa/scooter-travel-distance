@@ -7,11 +7,12 @@ import App from '../components/App'
 export default function Home() {
 	const { t } = useI18n()
 
-	const title = t('Scooter Travel Distance Calculator')
+	const title = t('title')
+	const description = t('description')
 
 	return (
 		<>
-			<NextSeo title={title} description={title} />
+			<NextSeo title={title} description={description} />
 			<App />
 		</>
 	)

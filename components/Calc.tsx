@@ -7,7 +7,6 @@ import {
 	InputRightAddon,
 	Button,
 	Box,
-	Spinner,
 	Select,
 	Heading,
 	Flex,
@@ -59,7 +58,7 @@ export default function Calc({ isMetric }: Props) {
 		formState: { isSubmitting, errors },
 	} = useForm<FormValues>({ defaultValues: savedValues })
 
-	const title = t('Scooter Travel Distance Calculator')
+	const title = t('title')
 
 	useEffect(() => {
 		setResult(null)
@@ -134,6 +133,8 @@ export default function Calc({ isMetric }: Props) {
 		}
 	}
 
+	const loadingWeatherText = t('loading weather text')
+
 	return (
 		<Box className="Calc">
 			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={6}>
@@ -156,7 +157,7 @@ export default function Calc({ isMetric }: Props) {
 									validate: validatePositive,
 								})}
 							/>
-							<InputRightAddon children={t(isMetric ? 'kg' : 'lbs')} />
+							<InputRightAddon>{t(isMetric ? 'kg' : 'lbs')}</InputRightAddon>
 						</InputGroup>
 						<FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
 					</FormControl>
@@ -175,7 +176,7 @@ export default function Calc({ isMetric }: Props) {
 									validate: validatePositive,
 								})}
 							/>
-							<InputRightAddon children={t('W⋅h')} />
+							<InputRightAddon>{t('W⋅h')}</InputRightAddon>
 						</InputGroup>
 						<FormErrorMessage>{errors.battery?.message}</FormErrorMessage>
 					</FormControl>
@@ -192,17 +193,17 @@ export default function Calc({ isMetric }: Props) {
 								isDisabled={weatherLoading}
 								{...register('temperature', { required: t('required')! })}
 							/>
-							<InputRightAddon padding={0}>
-								<Button
-									title={t('Get weather from my location')}
-									onClick={loadWeather}
-									border="none"
-								>
-									{weatherLoading ? <Spinner /> : `◉ °${isMetric ? 'C' : 'F'}`}
-								</Button>
-							</InputRightAddon>
+							<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
 						</InputGroup>
 						<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
+						<Button
+							onClick={loadWeather}
+							variant="link"
+							isLoading={weatherLoading}
+							loadingText={loadingWeatherText}
+						>
+							{t('detect from location')}
+						</Button>
 					</FormControl>
 
 					<FormControl isInvalid={Boolean(errors.chargesNum)}>

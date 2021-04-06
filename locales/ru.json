@@ -1,5 +1,6 @@
 {
-	"Scooter Travel Distance Calculator": "Калькулятор пробега самоката",
+	"title": "Калькулятор пробега самоката",
+	"description": "Калькулятор пробега для электросамоката",
 	"Rider's Weight": "Вес ездока",
 	"required": "обязательное поле",
 	"positive number required": "число должно быть положительным",
@@ -17,6 +18,7 @@
 	"Distance": "Пробег",
 	"km": "км",
 	"miles": "миль",
-	"Get weather from my location": "Получить погоду на основе моего местоположения",
+	"detect from location": "определить по местоположению",
+	"loading weather text": "определение погоды...",
 	"error loading weather": "ошибка загрузки погоды"
 }

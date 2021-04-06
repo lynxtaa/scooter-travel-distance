@@ -1,5 +1,6 @@
 {
-	"Scooter Travel Distance Calculator": "Scooter Travel Distance Calculator",
+	"title": "Scooter Travel Distance Calculator",
+	"description": "Electric Scooter Travel Distance Calculator",
 	"Rider's Weight": "Rider's Weight",
 	"required": "required",
 	"positive number required": "positive number required",
@@ -17,6 +18,7 @@
 	"Distance": "Distance",
 	"km": "km",
 	"miles": "miles",
-	"Get weather from my location": "Get weather from my location",
+	"detect from location": "detect from location",
+	"loading weather text": "loading weather...",
 	"error loading weather": "error loading weather"
 }

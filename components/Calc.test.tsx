@@ -85,7 +85,7 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 
 	Object.defineProperty(navigator, 'geolocation', { value: geolocation })
 
-	userEvent.click(screen.getByRole('button', { name: /Get weather/ }))
+	userEvent.click(screen.getByRole('button', { name: /detect from location/ }))
 
 	await waitFor(() => {
 		expect(screen.getByRole('spinbutton', { name: 'Temperature Outside' })).toHaveValue(
