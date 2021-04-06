@@ -16,6 +16,14 @@ export const theme = extendTheme({
 			900: '#1d0009',
 		},
 	},
+	components: {
+		Heading: {
+			baseStyle: {
+				fontWeight: 'normal',
+				cursor: 'default',
+			},
+		},
+	},
 	styles: {
 		global: {
 			':focus:not(:focus-visible)': {
