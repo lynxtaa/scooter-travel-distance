@@ -42,6 +42,27 @@ test('clicking "Calculate" shows result for valid form', async () => {
 	expect(await screen.findByText('43')).toBeInTheDocument()
 })
 
+test('clicking "Calculate" shows infinity for very big results', async () => {
+	render(<Calc isMetric />)
+
+	userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '1')
+
+	userEvent.type(screen.getByRole('spinbutton', { name: 'Battery Capacity' }), '50000')
+
+	userEvent.type(screen.getByRole('spinbutton', { name: 'Temperature Outside' }), '20000')
+
+	userEvent.type(
+		screen.getByRole('spinbutton', { name: 'Full battery charges count' }),
+		'10',
+	)
+
+	userEvent.selectOptions(screen.getByRole('combobox', { name: 'Speed' }), ['0.81'])
+
+	userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
+
+	expect(await screen.findByText(/∞/)).toBeInTheDocument()
+})
+
 test('clicking "Get weather from my location" loads temperature', async () => {
 	server.use(
 		rest.get('/api/weather', (req, res, ctx) => {

@@ -239,7 +239,8 @@ export default function Calc({ isMetric }: Props) {
 				<Flex alignItems="center" mt={4}>
 					{typeof result === 'number' && (
 						<Box fontSize="xl">
-							{t('Distance')}: <Counter>{result}</Counter> {t(isMetric ? 'km' : 'miles')}
+							{t('Distance')}: {result <= 100_000 ? <Counter>{result}</Counter> : '∞'}{' '}
+							{t(isMetric ? 'km' : 'miles')}
 						</Box>
 					)}
 					<Button type="submit" marginLeft="auto" isLoading={isSubmitting}>
