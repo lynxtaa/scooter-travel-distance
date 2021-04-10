@@ -10,6 +10,7 @@ import {
 	Select,
 	Heading,
 	Flex,
+	Text,
 	Stack,
 } from '@chakra-ui/react'
 import { useI18n } from 'next-localization'
@@ -57,8 +58,6 @@ export default function Calc({ isMetric }: Props) {
 		setError,
 		formState: { isSubmitting, errors },
 	} = useForm<FormValues>({ defaultValues: savedValues })
-
-	const title = t('title')
 
 	useEffect(() => {
 		setResult(null)
@@ -138,9 +137,12 @@ export default function Calc({ isMetric }: Props) {
 	return (
 		<Box className="Calc">
 			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={6}>
-				{title}
+				{t('title')}
+				<br />
+				<Text opacity={0.5} fontSize="md">
+					{t('subtitle')}
+				</Text>
 			</Heading>
-
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Stack spacing={4}>
 					<FormControl isInvalid={Boolean(errors.weight)}>
@@ -153,7 +155,7 @@ export default function Calc({ isMetric }: Props) {
 								borderTopRightRadius="none"
 								borderBottomRightRadius="none"
 								{...register('weight', {
-									required: t('required')!,
+									required: t('required'),
 									validate: validatePositive,
 								})}
 							/>
@@ -172,7 +174,7 @@ export default function Calc({ isMetric }: Props) {
 								borderTopRightRadius="none"
 								borderBottomRightRadius="none"
 								{...register('battery', {
-									required: t('required')!,
+									required: t('required'),
 									validate: validatePositive,
 								})}
 							/>
@@ -191,7 +193,7 @@ export default function Calc({ isMetric }: Props) {
 								borderBottomRightRadius="none"
 								placeholder={isMetric ? '20' : '70'}
 								isDisabled={weatherLoading}
-								{...register('temperature', { required: t('required')! })}
+								{...register('temperature', { required: t('required') })}
 							/>
 							<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
 						</InputGroup>
@@ -213,7 +215,7 @@ export default function Calc({ isMetric }: Props) {
 							id="chargesNum"
 							placeholder="10"
 							{...register('chargesNum', {
-								required: t('required')!,
+								required: t('required'),
 								validate: validatePositive,
 							})}
 						/>
@@ -225,7 +227,7 @@ export default function Calc({ isMetric }: Props) {
 						<Select
 							id="speed"
 							defaultValue=""
-							{...register('speed', { required: t('required')! })}
+							{...register('speed', { required: t('required') })}
 						>
 							<option disabled value="" hidden></option>
 							<option value="1">{t('Slow ride')}</option>
