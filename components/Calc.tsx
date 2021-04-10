@@ -119,6 +119,7 @@ export default function Calc({ isMetric }: Props) {
 			setValue(
 				'temperature',
 				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
+				{ shouldValidate: true },
 			)
 		} catch (err) {
 			// eslint-disable-next-line no-console
@@ -184,20 +185,22 @@ export default function Calc({ isMetric }: Props) {
 					</FormControl>
 
 					<FormControl isInvalid={Boolean(errors.temperature)}>
-						<FormLabel htmlFor="temperature">{t('Temperature Outside')}</FormLabel>
-						<InputGroup>
-							<Input
-								type="number"
-								id="temperature"
-								borderTopRightRadius="none"
-								borderBottomRightRadius="none"
-								placeholder={isMetric ? '20' : '70'}
-								isDisabled={weatherLoading}
-								{...register('temperature', { required: t('required') })}
-							/>
-							<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
-						</InputGroup>
-						<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
+						<Box mb={2}>
+							<FormLabel htmlFor="temperature">{t('Temperature Outside')}</FormLabel>
+							<InputGroup>
+								<Input
+									type="number"
+									id="temperature"
+									borderTopRightRadius="none"
+									borderBottomRightRadius="none"
+									placeholder={isMetric ? '20' : '70'}
+									isDisabled={weatherLoading}
+									{...register('temperature', { required: t('required') })}
+								/>
+								<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
+							</InputGroup>
+							<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
+						</Box>
 						<Button
 							onClick={loadWeather}
 							variant="link"
