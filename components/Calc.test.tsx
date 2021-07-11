@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { ChakraProvider } from '@chakra-ui/react'
 import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
