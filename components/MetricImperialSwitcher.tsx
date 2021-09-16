@@ -1,33 +1,32 @@
-import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/react'
+import Button from './Button'
 
 type Props = {
 	isMetric: boolean
 	setIsMetric: (value: boolean) => void
-} & ButtonGroupProps
+	className?: string
+}
 
 export default function MetricImperialSwitcher({
 	isMetric,
 	setIsMetric,
-	...rest
+	className,
 }: Props) {
 	return (
-		<ButtonGroup spacing={0} {...rest}>
+		<div className={className}>
 			<Button
 				variant={isMetric ? 'solid' : 'outline'}
+				className="rounded-r-none"
 				onClick={() => setIsMetric(true)}
-				borderBottomRightRadius="none"
-				borderTopRightRadius="none"
 			>
 				°C
 			</Button>
 			<Button
 				variant={isMetric ? 'outline' : 'solid'}
+				className="rounded-l-none"
 				onClick={() => setIsMetric(false)}
-				borderBottomLeftRadius="none"
-				borderTopLeftRadius="none"
 			>
 				°F
 			</Button>
-		</ButtonGroup>
+		</div>
 	)
 }

@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-import { ChakraProvider } from '@chakra-ui/react'
 import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nProvider } from 'next-localization'
@@ -16,11 +15,9 @@ import Calc from './Calc'
 const render = (el: React.ReactElement, options?: RenderOptions) =>
 	_render(el, {
 		wrapper: ({ children }) => (
-			<ChakraProvider>
-				<I18nProvider locale="en" lngDict={langEn}>
-					{children as any}
-				</I18nProvider>
-			</ChakraProvider>
+			<I18nProvider locale="en" lngDict={langEn}>
+				{children as any}
+			</I18nProvider>
 		),
 		...options,
 	})

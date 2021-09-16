@@ -29,6 +29,6 @@ export default async function fetchApi<TData extends Record<string, unknown> | u
 
 		return { data }
 	} catch (error) {
-		return { error }
+		return { error: error as Error }
 	}
 }

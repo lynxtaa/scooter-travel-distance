@@ -1,25 +1,16 @@
-import {
-	FormErrorMessage,
-	FormLabel,
-	FormControl,
-	Input,
-	InputGroup,
-	InputRightAddon,
-	Button,
-	Box,
-	Select,
-	Heading,
-	Flex,
-	Text,
-	Stack,
-} from '@chakra-ui/react'
 import { useI18n } from 'next-localization'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { WeatherData } from '../lib/weather'
 
+import Button from './Button'
 import Counter from './Counter'
+import FormErrorMessage from './FormErrorMessage'
+import Input from './Input'
+import InputRightAddon from './InputRightAddon'
+import Select from './Select'
+import Spinner from './Spinner'
 import useLocalStorage from './hooks/useLocalStorage'
 import fetchApi from './utils/fetchApi'
 import {
@@ -56,7 +47,7 @@ export default function Calc({ isMetric }: Props) {
 		handleSubmit,
 		setValue,
 		setError,
-		formState: { isSubmitting, errors },
+		formState: { errors },
 	} = useForm<FormValues>({ defaultValues: savedValues })
 
 	useEffect(() => {
@@ -136,100 +127,122 @@ export default function Calc({ isMetric }: Props) {
 	const loadingWeatherText = t('loading weather text')
 
 	return (
-		<Box className="Calc">
-			<Heading as="h1" fontSize="3xl" fontWeight="normal" mb={6}>
-				{t('title')}
+		<div>
+			<h1 className="mb-6 leading-tight">
+				<span className="text-3xl">{t('title')}</span>
 				<br />
-				<Text opacity={0.5} fontSize="md">
-					{t('subtitle')}
-				</Text>
-			</Heading>
+				<span className="text-md opacity-50">{t('subtitle')}</span>
+			</h1>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Stack spacing={4}>
-					<FormControl isInvalid={Boolean(errors.weight)}>
-						<FormLabel htmlFor="weight">{t("Rider's Weight")}</FormLabel>
-						<InputGroup>
+				<div className="space-y-4">
+					<div>
+						<label htmlFor="weight" className="block mb-2">
+							{t("Rider's Weight")}
+						</label>
+						<div className="flex flex-row w-full">
 							<Input
 								type="number"
 								id="weight"
+								className="w-full rounded-r-none"
+								isInvalid={Boolean(errors.weight)}
 								placeholder={isMetric ? '75' : '165'}
-								borderTopRightRadius="none"
-								borderBottomRightRadius="none"
 								{...register('weight', {
 									required: t('required'),
 									validate: validatePositive,
 								})}
 							/>
 							<InputRightAddon>{t(isMetric ? 'kg' : 'lbs')}</InputRightAddon>
-						</InputGroup>
-						<FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
-					</FormControl>
+						</div>
+						{errors.weight && (
+							<FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
+						)}
+					</div>
 
-					<FormControl isInvalid={Boolean(errors.battery)}>
-						<FormLabel htmlFor="battery">{t('Battery Capacity')}</FormLabel>
-						<InputGroup>
+					<div>
+						<label htmlFor="battery" className="block mb-2">
+							{t('Battery Capacity')}
+						</label>
+						<div className="flex flex-row w-full">
 							<Input
 								type="number"
 								id="battery"
 								placeholder="500"
-								borderTopRightRadius="none"
-								borderBottomRightRadius="none"
+								isInvalid={Boolean(errors.battery)}
+								className="w-full rounded-r-none"
 								{...register('battery', {
 									required: t('required'),
 									validate: validatePositive,
 								})}
 							/>
 							<InputRightAddon>{t('W⋅h')}</InputRightAddon>
-						</InputGroup>
-						<FormErrorMessage>{errors.battery?.message}</FormErrorMessage>
-					</FormControl>
+						</div>
+						{errors.battery && (
+							<FormErrorMessage>{errors.battery?.message}</FormErrorMessage>
+						)}
+					</div>
 
-					<FormControl isInvalid={Boolean(errors.temperature)}>
-						<Box mb={2}>
-							<FormLabel htmlFor="temperature">{t('Temperature Outside')}</FormLabel>
-							<InputGroup>
+					<div>
+						<div className="mb-2">
+							<label htmlFor="temperature" className="block mb-2">
+								{t('Temperature Outside')}
+							</label>
+							<div className="flex flex-row w-full">
 								<Input
 									type="number"
 									id="temperature"
-									borderTopRightRadius="none"
-									borderBottomRightRadius="none"
+									className="w-full rounded-r-none"
+									isInvalid={Boolean(errors.temperature)}
 									placeholder={isMetric ? '20' : '70'}
 									isDisabled={weatherLoading}
 									{...register('temperature', { required: t('required') })}
 								/>
 								<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
-							</InputGroup>
-							<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
-						</Box>
-						<Button
-							onClick={loadWeather}
-							variant="link"
-							isLoading={weatherLoading}
-							loadingText={loadingWeatherText}
-						>
-							{t('detect from location')}
+							</div>
+							{errors.temperature && (
+								<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
+							)}
+						</div>
+						<Button onClick={loadWeather} variant="link" isDisabled={weatherLoading}>
+							{weatherLoading ? (
+								<span className="inline-flex flex-row items-center space-x-1">
+									<Spinner className="w-7 h-7" />
+									<span>{loadingWeatherText}</span>
+								</span>
+							) : (
+								t('detect from location')
+							)}
 						</Button>
-					</FormControl>
+					</div>
 
-					<FormControl isInvalid={Boolean(errors.chargesNum)}>
-						<FormLabel htmlFor="chargesNum">{t('Full battery charges count')}</FormLabel>
+					<div>
+						<label htmlFor="chargesNum" className="block mb-2">
+							{t('Full battery charges count')}
+						</label>
 						<Input
 							type="number"
 							id="chargesNum"
 							placeholder="10"
+							className="w-full rounded-r-none"
+							isInvalid={Boolean(errors.chargesNum)}
 							{...register('chargesNum', {
 								required: t('required'),
 								validate: validatePositive,
 							})}
 						/>
-						<FormErrorMessage>{errors.chargesNum?.message}</FormErrorMessage>
-					</FormControl>
+						{errors.chargesNum && (
+							<FormErrorMessage>{errors.chargesNum?.message}</FormErrorMessage>
+						)}
+					</div>
 
-					<FormControl isInvalid={Boolean(errors.speed)}>
-						<FormLabel htmlFor="speed">{t('Speed')}</FormLabel>
+					<div>
+						<label htmlFor="speed" className="block mb-2">
+							{t('Speed')}
+						</label>
 						<Select
+							className="w-full"
 							id="speed"
 							defaultValue=""
+							isInvalid={Boolean(errors.speed)}
 							{...register('speed', { required: t('required') })}
 						>
 							<option disabled value="" hidden></option>
@@ -237,22 +250,22 @@ export default function Calc({ isMetric }: Props) {
 							<option value="0.81">{t('Medium speed ride')}</option>
 							<option value="0.54">{t('Fast ride')}</option>
 						</Select>
-						<FormErrorMessage>{errors.speed?.message}</FormErrorMessage>
-					</FormControl>
-				</Stack>
+						{errors.speed && <FormErrorMessage>{errors.speed?.message}</FormErrorMessage>}
+					</div>
+				</div>
 
-				<Flex alignItems="center" mt={4}>
+				<div className="flex items-center mt-4">
 					{typeof result === 'number' && (
-						<Box fontSize="xl">
+						<div className="text-xl">
 							{t('Distance')}: {result <= 100_000 ? <Counter>{result}</Counter> : '∞'}{' '}
 							{t(isMetric ? 'km' : 'miles')}
-						</Box>
+						</div>
 					)}
-					<Button type="submit" marginLeft="auto" isLoading={isSubmitting}>
+					<Button type="submit" className="ml-auto">
 						{t('Calculate')}
 					</Button>
-				</Flex>
+				</div>
 			</form>
-		</Box>
+		</div>
 	)
 }

@@ -1,34 +1,33 @@
-import { Button, ButtonGroup, ButtonGroupProps } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+
+import Button from './Button'
 
 enum Language {
 	En = 'en',
 	Ru = 'ru',
 }
 
-export default function LanguageSwitcher(props: ButtonGroupProps) {
+export default function LanguageSwitcher() {
 	const router = useRouter()
 
 	return (
-		<ButtonGroup spacing={0} {...props}>
+		<div>
 			<Button
 				variant={router.locale === Language.En ? 'solid' : 'outline'}
 				onClick={() => router.replace('/', '/', { locale: Language.En })}
 				title="English"
-				borderBottomRightRadius="none"
-				borderTopRightRadius="none"
+				className="rounded-r-none"
 			>
 				EN
 			</Button>
 			<Button
 				variant={router.locale === Language.Ru ? 'solid' : 'outline'}
 				onClick={() => router.replace('/', '/', { locale: Language.Ru })}
-				borderBottomLeftRadius="none"
-				borderTopLeftRadius="none"
+				className="rounded-l-none"
 				title="Русский"
 			>
 				RU
 			</Button>
-		</ButtonGroup>
+		</div>
 	)
 }
