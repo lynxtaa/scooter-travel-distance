@@ -143,7 +143,7 @@ export default function Calc({ isMetric }: Props) {
 							<Input
 								type="number"
 								id="weight"
-								className="w-full rounded-r-none"
+								className="w-full rounded-r-none z-10"
 								isInvalid={Boolean(errors.weight)}
 								placeholder={isMetric ? '75' : '165'}
 								{...register('weight', {
@@ -168,7 +168,7 @@ export default function Calc({ isMetric }: Props) {
 								id="battery"
 								placeholder="500"
 								isInvalid={Boolean(errors.battery)}
-								className="w-full rounded-r-none"
+								className="w-full rounded-r-none z-10"
 								{...register('battery', {
 									required: t('required'),
 									validate: validatePositive,
@@ -190,7 +190,7 @@ export default function Calc({ isMetric }: Props) {
 								<Input
 									type="number"
 									id="temperature"
-									className="w-full rounded-r-none"
+									className="w-full rounded-r-none z-10"
 									isInvalid={Boolean(errors.temperature)}
 									placeholder={isMetric ? '20' : '70'}
 									isDisabled={weatherLoading}
@@ -222,7 +222,7 @@ export default function Calc({ isMetric }: Props) {
 							type="number"
 							id="chargesNum"
 							placeholder="10"
-							className="w-full rounded-r-none"
+							className="w-full rounded-r-none z-10"
 							isInvalid={Boolean(errors.chargesNum)}
 							{...register('chargesNum', {
 								required: t('required'),
