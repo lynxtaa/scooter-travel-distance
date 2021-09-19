@@ -15,7 +15,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
 			ref={ref}
 			readOnly={isDisabled}
 			className={cn(
-				'transition duration-200 ease-in-out border-whiteAlpha-300 bg-gray-800 rounded-md',
+				'transition duration-200 ease-in-out border-whiteAlpha-300 bg-gray-800 rounded-md placeholder-whiteAlpha-500',
 				isDisabled
 					? 'focus:border-whiteAlpha-300 cursor-default opacity-80'
 					: 'hover:border-gray-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400',

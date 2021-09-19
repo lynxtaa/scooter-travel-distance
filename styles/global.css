@@ -31,8 +31,3 @@ input[type='number'] {
 option {
 	@apply bg-gray-700;
 }
-
-input::placeholder,
-textarea::placeholder {
-	@apply text-whiteAlpha-500;
-}
