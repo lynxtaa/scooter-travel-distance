@@ -23,6 +23,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 					name="google-site-verification"
 					content="3Tt_9iZaHQLOItmIIIDcwYxxdijZmUtwOKttlBOjY8o"
 				/>
+				<meta name="yandex-verification" content="baeb94b1bad0a600" />
 			</Head>
 			<I18nProvider lngDict={lngDict} locale={router.locale!}>
 				<Component {...rest} />
