@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes, DetailedHTMLProps, forwardRef } from 'react'
+import { SelectHTMLAttributes, DetailedHTMLProps, forwardRef, ForwardedRef } from 'react'
 
 import { cn } from '../lib/cn'
 
@@ -8,8 +8,11 @@ type Props = {
 	isInvalid?: boolean
 } & DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
-const Select = forwardRef<HTMLSelectElement, Props>(
-	({ children, className, isInvalid, ...rest }, ref) => (
+function Select(
+	{ children, className, isInvalid, ...rest }: Props,
+	ref: ForwardedRef<HTMLSelectElement>,
+) {
+	return (
 		<select
 			ref={ref}
 			className={cn(
@@ -21,7 +24,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(
 		>
 			{children}
 		</select>
-	),
-)
+	)
+}
 
-export default Select
+export default forwardRef(Select)

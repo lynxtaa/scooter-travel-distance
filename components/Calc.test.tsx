@@ -90,7 +90,7 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 	const geolocation: Geolocation = {
 		clearWatch: jest.fn(),
 		watchPosition: jest.fn(),
-		getCurrentPosition: (resolve) =>
+		getCurrentPosition: resolve =>
 			resolve({
 				timestamp: new Date().valueOf(),
 				coords: {

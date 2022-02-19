@@ -1,27 +1,29 @@
-export type WeatherData = {
-	cod: number
-	main: {
-		temp: number
-		feels_like: number
-		temp_min: number
-		temp_max: number
-		pressure: number
-		humidity: number
-	}
-	wind: {
-		speed: number
-		deg: number
-	}
-	name: string
-}
+import { AbortController } from 'node-abort-controller'
+import { z } from 'zod'
 
-export type WeatherError = {
-	cod: number
-	message: string
-}
+const WeatherDataSchema = z.object({
+	cod: z.literal(200),
+	main: z.object({
+		temp: z.number(),
+		feels_like: z.number(),
+		temp_min: z.number(),
+		temp_max: z.number(),
+		pressure: z.number(),
+		humidity: z.number(),
+	}),
+	wind: z.object({
+		speed: z.number(),
+		deg: z.number(),
+	}),
+	name: z.string(),
+})
 
-const isResponseError = (data: WeatherError | WeatherData): data is WeatherError =>
-	data.cod !== 200
+export type WeatherData = z.infer<typeof WeatherDataSchema>
+
+const WeatherErrorSchema = z.object({
+	cod: z.number(),
+	message: z.string(),
+})
 
 export async function getWeather({
 	latitude,
@@ -41,17 +43,24 @@ export async function getWeather({
 		appid: process.env.OPENWEATHER_KEY,
 	})
 
+	const abortController = new AbortController()
+
+	setTimeout(() => abortController.abort(), 10_000)
+
 	const response = await fetch(
 		`https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
+		{ signal: abortController.signal },
 	)
 
 	if (!response.ok) {
 		throw new Error(`Request to ${response.url} failed (${response.status})`)
 	}
 
-	const data = await response.json()
+	const json = await response.json()
 
-	if (isResponseError(data)) {
+	const data = z.union([WeatherDataSchema, WeatherErrorSchema]).parse(json)
+
+	if ('message' in data) {
 		throw new Error(`Request to ${response.url} failed (${data.message})`)
 	}
 

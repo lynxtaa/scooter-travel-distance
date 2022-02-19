@@ -13,7 +13,7 @@ export default function Counter({ children }: Props) {
 
 	return (
 		<animated.span>
-			{number.to((value) => Math.round(value).toLocaleString())}
+			{number.to(value => Math.round(value).toLocaleString())}
 		</animated.span>
 	)
 }

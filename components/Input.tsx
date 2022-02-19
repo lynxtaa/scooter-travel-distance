@@ -1,16 +1,18 @@
-import { InputHTMLAttributes, DetailedHTMLProps, forwardRef } from 'react'
+import { InputHTMLAttributes, DetailedHTMLProps, forwardRef, ForwardedRef } from 'react'
 
 import { cn } from '../lib/cn'
 
 type Props = {
-	children?: React.ReactNode
 	className?: string
 	isInvalid?: boolean
 	isDisabled?: boolean
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-const Input = forwardRef<HTMLInputElement, Props>(
-	({ children, className, isInvalid, isDisabled, ...rest }, ref) => (
+function Input(
+	{ className, isInvalid, isDisabled, ...rest }: Props,
+	ref: ForwardedRef<HTMLInputElement>,
+) {
+	return (
 		<input
 			ref={ref}
 			readOnly={isDisabled}
@@ -26,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
 			)}
 			{...rest}
 		/>
-	),
-)
+	)
+}
 
-export default Input
+export default forwardRef(Input)

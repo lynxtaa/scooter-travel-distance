@@ -7,14 +7,16 @@ export default async function weather(
 	res: NextApiResponse<WeatherData>,
 ): Promise<void> {
 	if (req.method !== 'GET') {
-		return res.status(405).end()
+		res.status(405).end()
+		return
 	}
 
 	const latitude = Number(req.query.latitude)
 	const longitude = Number(req.query.longitude)
 
 	if (isNaN(latitude) || isNaN(longitude)) {
-		return res.status(400).end()
+		res.status(400).end()
+		return
 	}
 
 	const weatherData = await getWeather({ latitude, longitude })

@@ -2,8 +2,7 @@
 const forms = require('@tailwindcss/forms')
 
 module.exports = {
-	mode: 'jit',
-	purge: ['./pages/**/*.tsx', './components/**/*.tsx', './styles/**/*.css'],
+	content: ['./pages/**/*.tsx', './components/**/*.tsx', './styles/**/*.css'],
 	theme: {
 		extend: {
 			colors: {
