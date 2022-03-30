@@ -1,19 +1,38 @@
-import { useSpring, animated, config } from 'react-spring'
+import { animate } from 'popmotion'
+import { useEffect, useRef } from 'react'
 
 type Props = {
 	children: number
 }
 
 export default function Counter({ children }: Props) {
-	const { number } = useSpring({
-		from: { number: 0 },
-		number: children,
-		config: { ...config.default, clamp: true },
-	})
+	const spanRef = useRef<HTMLSpanElement>(null)
 
-	return (
-		<animated.span>
-			{number.to(value => Math.round(value).toLocaleString())}
-		</animated.span>
-	)
+	useEffect(() => {
+		const span = spanRef.current
+
+		if (!span) {
+			return
+		}
+
+		span.innerText = '0'
+
+		const { stop } = animate({
+			type: 'spring',
+			damping: 20,
+			stiffness: 100,
+			from: 0,
+			to: children,
+			onUpdate: num => {
+				span.innerText = Math.round(num).toLocaleString()
+			},
+		})
+
+		return function () {
+			stop()
+			span.innerText = '0'
+		}
+	}, [children])
+
+	return <span ref={spanRef} />
 }
