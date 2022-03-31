@@ -1,38 +1,32 @@
 import { animate } from 'popmotion'
-import { useEffect, useRef } from 'react'
+import { useEffect, startTransition, useState, useRef } from 'react'
 
 type Props = {
 	children: number
 }
 
 export default function Counter({ children }: Props) {
-	const spanRef = useRef<HTMLSpanElement>(null)
+	const [value, setValue] = useState(0)
+
+	const latestValue = useRef(value)
+	latestValue.current = value
 
 	useEffect(() => {
-		const span = spanRef.current
-
-		if (!span) {
-			return
-		}
-
-		span.innerText = '0'
-
 		const { stop } = animate({
 			type: 'spring',
 			damping: 20,
 			stiffness: 100,
-			from: 0,
+			from: latestValue.current,
 			to: children,
 			onUpdate: num => {
-				span.innerText = Math.round(num).toLocaleString()
+				startTransition(() => {
+					setValue(num)
+				})
 			},
 		})
 
-		return function () {
-			stop()
-			span.innerText = '0'
-		}
+		return stop
 	}, [children])
 
-	return <span ref={spanRef} />
+	return <span>{Math.round(value).toLocaleString()}</span>
 }

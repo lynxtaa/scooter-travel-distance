@@ -10,13 +10,17 @@ jest.mock('../components/Counter')
 
 beforeAll(() => server.listen())
 
-afterEach(() => {
+function cleanup() {
 	if (typeof window !== 'undefined') {
 		sessionStorage.clear()
 		localStorage.clear()
 	}
 
 	server.resetHandlers()
-})
+}
+
+beforeEach(cleanup)
+
+afterEach(cleanup)
 
 afterAll(() => server.close())
