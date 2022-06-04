@@ -25,20 +25,26 @@ const render = (el: React.ReactElement, options?: RenderOptions) =>
 test('clicking "Calculate" shows result for valid form', async () => {
 	render(<Calc isMetric />)
 
-	userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
+	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
 
-	userEvent.type(screen.getByRole('spinbutton', { name: 'Battery Capacity' }), '500')
+	await userEvent.type(
+		screen.getByRole('spinbutton', { name: 'Battery Capacity' }),
+		'500',
+	)
 
-	userEvent.type(screen.getByRole('spinbutton', { name: 'Temperature Outside' }), '20')
+	await userEvent.type(
+		screen.getByRole('spinbutton', { name: 'Temperature Outside' }),
+		'20',
+	)
 
-	userEvent.type(
+	await userEvent.type(
 		screen.getByRole('spinbutton', { name: 'Full battery charges count' }),
 		'10',
 	)
 
-	userEvent.selectOptions(screen.getByRole('combobox', { name: 'Speed' }), ['0.81'])
+	await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Speed' }), ['0.81'])
 
-	userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
+	await userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
 
 	expect(await screen.findByText('43')).toBeInTheDocument()
 })
@@ -46,20 +52,26 @@ test('clicking "Calculate" shows result for valid form', async () => {
 test('clicking "Calculate" shows infinity for very big results', async () => {
 	render(<Calc isMetric />)
 
-	userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '1')
+	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '1')
 
-	userEvent.type(screen.getByRole('spinbutton', { name: 'Battery Capacity' }), '50000')
+	await userEvent.type(
+		screen.getByRole('spinbutton', { name: 'Battery Capacity' }),
+		'50000',
+	)
 
-	userEvent.type(screen.getByRole('spinbutton', { name: 'Temperature Outside' }), '20000')
+	await userEvent.type(
+		screen.getByRole('spinbutton', { name: 'Temperature Outside' }),
+		'20000',
+	)
 
-	userEvent.type(
+	await userEvent.type(
 		screen.getByRole('spinbutton', { name: 'Full battery charges count' }),
 		'10',
 	)
 
-	userEvent.selectOptions(screen.getByRole('combobox', { name: 'Speed' }), ['0.81'])
+	await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Speed' }), ['0.81'])
 
-	userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
+	await userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
 
 	expect(await screen.findByText(/∞/)).toBeInTheDocument()
 })
@@ -107,7 +119,7 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 
 	Object.defineProperty(navigator, 'geolocation', { value: geolocation })
 
-	userEvent.click(screen.getByRole('button', { name: /detect from location/ }))
+	await userEvent.click(screen.getByRole('button', { name: /detect from location/ }))
 
 	await waitFor(() => {
 		expect(screen.getByRole('spinbutton', { name: 'Temperature Outside' })).toHaveValue(

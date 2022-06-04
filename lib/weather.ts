@@ -1,4 +1,3 @@
-import { AbortController } from 'node-abort-controller'
 import { z } from 'zod'
 
 const WeatherDataSchema = z.object({
@@ -49,7 +48,7 @@ export async function getWeather({
 
 	const response = await fetch(
 		`https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
-		{ signal: abortController.signal },
+		{ signal: abortController.signal as any },
 	)
 
 	if (!response.ok) {
