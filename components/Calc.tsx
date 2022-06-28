@@ -1,5 +1,5 @@
 import { useI18n } from 'next-localization'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { WeatherData } from '../lib/weather'
@@ -50,9 +50,11 @@ export default function Calc({ isMetric }: Props) {
 		formState: { errors },
 	} = useForm<FormValues>({ defaultValues: savedValues })
 
-	useEffect(() => {
+	const [prevIsMetric, setPrevIsMetric] = useState(isMetric)
+	if (isMetric !== prevIsMetric) {
+		setPrevIsMetric(isMetric)
 		setResult(null)
-	}, [isMetric])
+	}
 
 	function onSubmit(form: FormValues) {
 		const weight = isMetric ? +form.weight : poundsToKg(+form.weight)
