@@ -14,7 +14,7 @@ export default function Button({
 	children,
 	className,
 	variant = 'solid',
-	isDisabled,
+	isDisabled = false,
 	...rest
 }: Props) {
 	const baseStyles: ClassValue[] = [

@@ -31,7 +31,7 @@ export async function getWeather({
 	latitude: number
 	longitude: number
 }): Promise<WeatherData> {
-	if (!process.env.OPENWEATHER_KEY) {
+	if (process.env.OPENWEATHER_KEY === undefined) {
 		throw new Error('Env OPENWEATHER_KEY not set')
 	}
 
@@ -47,7 +47,7 @@ export async function getWeather({
 	setTimeout(() => abortController.abort(), 10_000)
 
 	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
+		`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`,
 		{ signal: abortController.signal as any },
 	)
 

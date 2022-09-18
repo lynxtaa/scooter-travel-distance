@@ -9,7 +9,7 @@ type Props = {
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 function Input(
-	{ className, isInvalid, isDisabled, ...rest }: Props,
+	{ className, isInvalid = false, isDisabled = false, ...rest }: Props,
 	ref: ForwardedRef<HTMLInputElement>,
 ) {
 	return (

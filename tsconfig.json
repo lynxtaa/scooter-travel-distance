@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "es2021",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -14,7 +14,6 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"outDir": ".next",
-		"types": ["jest", "react/next", "react-dom/next", "@testing-library/jest-dom"],
 		"incremental": true
 	},
 	"exclude": ["node_modules"],

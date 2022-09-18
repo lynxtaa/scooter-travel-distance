@@ -1,6 +1,4 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
 
 import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -100,8 +98,8 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 	render(<Calc isMetric />)
 
 	const geolocation: Geolocation = {
-		clearWatch: jest.fn(),
-		watchPosition: jest.fn(),
+		clearWatch: vi.fn(),
+		watchPosition: vi.fn(),
 		getCurrentPosition: resolve =>
 			resolve({
 				timestamp: new Date().valueOf(),

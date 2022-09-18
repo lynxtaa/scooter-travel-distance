@@ -14,7 +14,9 @@ export default function LanguageSwitcher() {
 		<div>
 			<Button
 				variant={router.locale === Language.En ? 'solid' : 'outline'}
-				onClick={() => router.replace('/', '/', { locale: Language.En })}
+				onClick={() => {
+					void router.replace('/', '/', { locale: Language.En })
+				}}
 				title="English"
 				className="rounded-r-none"
 			>
@@ -22,7 +24,9 @@ export default function LanguageSwitcher() {
 			</Button>
 			<Button
 				variant={router.locale === Language.Ru ? 'solid' : 'outline'}
-				onClick={() => router.replace('/', '/', { locale: Language.Ru })}
+				onClick={() => {
+					void router.replace('/', '/', { locale: Language.Ru })
+				}}
 				className="rounded-l-none"
 				title="Русский"
 			>

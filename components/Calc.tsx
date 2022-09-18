@@ -37,7 +37,10 @@ export default function Calc({ isMetric }: Props) {
 	const [result, setResult] = useState<number | null>(null)
 	const [weatherLoading, setWeatherLoading] = useState(false)
 
-	const [savedValues, setSavedValues] = useLocalStorage<FormValues>('calcValues')
+	const [savedValues, setSavedValues] = useLocalStorage<FormValues | undefined>(
+		'calcValues',
+		undefined,
+	)
 
 	const validatePositive = (value: string) =>
 		Number(value) > 0 ? undefined : t('positive number required')
@@ -85,45 +88,34 @@ export default function Calc({ isMetric }: Props) {
 	}
 
 	async function loadWeather() {
-		try {
-			setWeatherLoading(true)
+		setWeatherLoading(true)
 
-			if (!navigator.geolocation) {
-				throw new Error('Geolocation is not supported by your browser')
-			}
-
-			const position = await new Promise<GeolocationPosition>((resolve, reject) =>
-				navigator.geolocation.getCurrentPosition(resolve, reject),
-			)
-
-			const searchParams = new URLSearchParams({
-				latitude: String(position.coords.latitude),
-				longitude: String(position.coords.longitude),
-			})
-
-			const result = await fetchApi<WeatherData>(`/api/weather?${searchParams}`)
-
-			if ('error' in result) {
-				throw result.error
-			}
-
-			const { main } = result.data
-
-			setValue(
-				'temperature',
-				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
-				{ shouldValidate: true },
-			)
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.error(err)
-			setError('temperature', {
-				type: 'weather-error',
-				message: t('error loading weather'),
-			})
-		} finally {
-			setWeatherLoading(false)
+		if (!('geolocation' in navigator)) {
+			throw new Error('Geolocation is not supported by your browser')
 		}
+
+		const position = await new Promise<GeolocationPosition>((resolve, reject) =>
+			navigator.geolocation.getCurrentPosition(resolve, reject),
+		)
+
+		const searchParams = new URLSearchParams({
+			latitude: String(position.coords.latitude),
+			longitude: String(position.coords.longitude),
+		})
+
+		const result = await fetchApi<WeatherData>(`/api/weather?${searchParams.toString()}`)
+
+		if ('error' in result) {
+			throw result.error
+		}
+
+		const { main } = result.data
+
+		setValue(
+			'temperature',
+			String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
+			{ shouldValidate: true },
+		)
 	}
 
 	const loadingWeatherText = t('loading weather text')
@@ -135,7 +127,14 @@ export default function Calc({ isMetric }: Props) {
 				<br />
 				<span className="text-md opacity-50">{t('subtitle')}</span>
 			</h1>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form
+				onSubmit={event => {
+					handleSubmit(onSubmit)(event).catch(err => {
+						// eslint-disable-next-line no-console
+						console.error(err)
+					})
+				}}
+			>
 				<div className="space-y-4">
 					<div>
 						<label htmlFor="weight" className="block mb-2">
@@ -204,7 +203,24 @@ export default function Calc({ isMetric }: Props) {
 								<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
 							)}
 						</div>
-						<Button onClick={loadWeather} variant="link" isDisabled={weatherLoading}>
+						<Button
+							onClick={() => {
+								loadWeather()
+									.catch(err => {
+										// eslint-disable-next-line no-console
+										console.error(err)
+										setError('temperature', {
+											type: 'weather-error',
+											message: t('error loading weather'),
+										})
+									})
+									.finally(() => {
+										setWeatherLoading(false)
+									})
+							}}
+							variant="link"
+							isDisabled={weatherLoading}
+						>
 							{weatherLoading ? (
 								<span className="inline-flex flex-row items-center space-x-1">
 									<Spinner className="w-7 h-7" />

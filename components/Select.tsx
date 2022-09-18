@@ -9,7 +9,7 @@ type Props = {
 } & DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
 function Select(
-	{ children, className, isInvalid, ...rest }: Props,
+	{ children, className, isInvalid = false, ...rest }: Props,
 	ref: ForwardedRef<HTMLSelectElement>,
 ) {
 	return (
