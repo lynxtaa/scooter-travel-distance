@@ -14,7 +14,7 @@ export default async function weather(
 	const latitude = Number(req.query.latitude)
 	const longitude = Number(req.query.longitude)
 
-	if (isNaN(latitude) || isNaN(longitude)) {
+	if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
 		res.status(400).end()
 		return
 	}

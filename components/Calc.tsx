@@ -60,15 +60,15 @@ export default function Calc({ isMetric }: Props) {
 	}
 
 	function onSubmit(form: FormValues) {
-		const weight = isMetric ? +form.weight : poundsToKg(+form.weight)
+		const weight = isMetric ? Number(form.weight) : poundsToKg(Number(form.weight))
 
 		const temperature = isMetric
-			? +form.temperature
-			: fahrenheitToCelius(+form.temperature)
+			? Number(form.temperature)
+			: fahrenheitToCelius(Number(form.temperature))
 
-		const chargesNum = +form.chargesNum
-		const battery = +form.battery
-		const speed = +form.speed
+		const chargesNum = Number(form.chargesNum)
+		const battery = Number(form.battery)
+		const speed = Number(form.speed)
 
 		// Формула позаимствована отсюда
 		// https://odno-koleso.com/kalkulyator-probega
@@ -130,7 +130,6 @@ export default function Calc({ isMetric }: Props) {
 			<form
 				onSubmit={event => {
 					handleSubmit(onSubmit)(event).catch(err => {
-						// eslint-disable-next-line no-console
 						console.error(err)
 					})
 				}}
@@ -207,7 +206,6 @@ export default function Calc({ isMetric }: Props) {
 							onClick={() => {
 								loadWeather()
 									.catch(err => {
-										// eslint-disable-next-line no-console
 										console.error(err)
 										setError('temperature', {
 											type: 'weather-error',

@@ -102,7 +102,7 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 		watchPosition: vi.fn(),
 		getCurrentPosition: resolve =>
 			resolve({
-				timestamp: new Date().valueOf(),
+				timestamp: Date.now(),
 				coords: {
 					latitude: 10,
 					longitude: 20,

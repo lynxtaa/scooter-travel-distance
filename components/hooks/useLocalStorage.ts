@@ -8,7 +8,7 @@ export default function useLocalStorage<T>(
 		try {
 			const saved = localStorage.getItem(key)
 			return saved !== null ? (JSON.parse(saved).value as T) : defaultValue
-		} catch (err) {
+		} catch {
 			return defaultValue
 		}
 	})
