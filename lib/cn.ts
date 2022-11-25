@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { overrideTailwindClasses } from 'tailwind-override'
+import { twMerge } from 'tailwind-merge'
 
-export const cn = (...args: Parameters<typeof clsx>): string =>
-	overrideTailwindClasses(clsx(...args))
+export const cn = (...args: Parameters<typeof clsx>): string => twMerge(clsx(...args))
