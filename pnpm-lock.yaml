@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  clsx:
-    specifier: 1.2.1
-    version: 1.2.1
   focus-visible:
     specifier: 5.2.0
     version: 5.2.0
@@ -30,11 +27,11 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-hook-form:
-    specifier: 7.39.5
-    version: 7.39.5(react@18.2.0)
+    specifier: 7.49.3
+    version: 7.49.3(react@18.2.0)
   tailwind-merge:
-    specifier: 1.8.0
-    version: 1.8.0
+    specifier: 2.2.0
+    version: 2.2.0
   zod:
     specifier: 3.22.4
     version: 3.22.4
@@ -199,7 +196,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.1
-    dev: true
 
   /@babel/types@7.23.6:
     resolution: {integrity: sha512-+uarb83brBzPKN38NX1MkB6vb6+mwvR6amUulqAE7ccQw1pEl+bCia9TbdG1lsnFP7lZySvUn37CHyXQdfTwzg==}
@@ -1836,11 +1832,6 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
     dev: true
-
-  /clsx@1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
-    dev: false
 
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -4433,9 +4424,9 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-hook-form@7.39.5(react@18.2.0):
-    resolution: {integrity: sha512-OE0HKyz5IPc6svN2wd+e+evidZrw4O4WZWAWYzQVZuHi+hYnHFSLnxOq0ddjbdmaLIsLHut/ab7j72y2QT3+KA==}
-    engines: {node: '>=12.22.0'}
+  /react-hook-form@7.49.3(react@18.2.0):
+    resolution: {integrity: sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==}
+    engines: {node: '>=18', pnpm: '8'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
@@ -4523,7 +4514,6 @@ packages:
 
   /regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
-    dev: true
 
   /regexp-tree@0.1.27:
     resolution: {integrity: sha512-iETxpjK6YoRWJG5o6hXLwvjYAoW+FEZn9os0PD/b6AP6xQwsa/Y7lCVgIixBbUPMfhu+i2LtdeAqVTgGlQarfA==}
@@ -5058,8 +5048,10 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /tailwind-merge@1.8.0:
-    resolution: {integrity: sha512-tER/2SbYRdfPYg6m4pDWZSlbymLTmDi+dx4iCsJmgmz4UDGzgnVelOvBe3GNtGCw9Bmc4MiObfJJbKeVL+KnMQ==}
+  /tailwind-merge@2.2.0:
+    resolution: {integrity: sha512-SqqhhaL0T06SW59+JVNfAqKdqLs0497esifRrZ7jOaefP3o64fdFNDMrAQWZFMxTLJPiHVjRLUywT8uFz1xNWQ==}
+    dependencies:
+      '@babel/runtime': 7.23.8
     dev: false
 
   /tailwindcss@3.4.1:
