@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
-import { ClassNameValue, twMerge } from 'tailwind-merge'
+import { type ButtonHTMLAttributes, type DetailedHTMLProps } from 'react'
+import { type ClassNameValue, twMerge } from 'tailwind-merge'
 
 type Props = {
 	children?: React.ReactNode

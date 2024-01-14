@@ -10,7 +10,7 @@ export default defineConfig({
 		include: ['**/*.test.{ts,tsx}'],
 		globals: true,
 		coverage: {
-			provider: 'c8',
+			provider: 'v8',
 			reporter: ['html', isCi ? 'text' : 'text-summary'],
 			all: true,
 			include: ['**/*.ts'],

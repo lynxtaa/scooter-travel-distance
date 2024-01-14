@@ -14,6 +14,7 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"outDir": ".next",
+		"verbatimModuleSyntax": true,
 		"incremental": true
 	},
 	"exclude": ["node_modules"],

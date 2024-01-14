@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next'
+import { type GetStaticProps } from 'next'
 import { useI18n } from 'next-localization'
 import { NextSeo } from 'next-seo'
 

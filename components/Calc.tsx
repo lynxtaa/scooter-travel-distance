@@ -2,7 +2,7 @@ import { useI18n } from 'next-localization'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { WeatherData } from '../lib/weather'
+import { type WeatherData } from '../lib/weather'
 
 import Button from './Button'
 import Counter from './Counter'

@@ -1,4 +1,4 @@
-import { AppProps } from 'next/app'
+import { type AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { I18nProvider } from 'next-localization'

@@ -1,11 +1,16 @@
 // @vitest-environment jsdom
 
-import { render as _render, screen, waitFor, RenderOptions } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {
+	render as _render,
+	screen,
+	waitFor,
+	type RenderOptions,
+} from '@testing-library/react'
+import { default as userEvent } from '@testing-library/user-event'
 import { I18nProvider } from 'next-localization'
 
-import { server, rest } from '../jest/server'
-import { WeatherData } from '../lib/weather'
+import { server, http, HttpResponse } from '../jest/server'
+import { type WeatherData } from '../lib/weather'
 import langEn from '../locales/en.json'
 
 import Calc from './Calc'
@@ -76,7 +81,7 @@ test('clicking "Calculate" shows infinity for very big results', async () => {
 
 test('clicking "Get weather from my location" loads temperature', async () => {
 	server.use(
-		rest.get('/api/weather', (req, res, ctx) => {
+		http.get('/api/weather', () => {
 			const data: WeatherData = {
 				cod: 200,
 				main: {
@@ -91,7 +96,7 @@ test('clicking "Get weather from my location" loads temperature', async () => {
 				name: 'St. Petersburg',
 			}
 
-			return res(ctx.json(data))
+			return HttpResponse.json(data)
 		}),
 	)
 
