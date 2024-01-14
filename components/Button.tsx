@@ -1,7 +1,5 @@
-import { ClassValue } from 'clsx'
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
-
-import { cn } from '../lib/cn'
+import { ClassNameValue, twMerge } from 'tailwind-merge'
 
 type Props = {
 	children?: React.ReactNode
@@ -17,14 +15,14 @@ export default function Button({
 	isDisabled = false,
 	...rest
 }: Props) {
-	const baseStyles: ClassValue[] = [
+	const baseStyles: ClassNameValue[] = [
 		'transition duration-200 ease-in-out font-semibold text-gray-200 rounded leading-tight',
 		isDisabled
 			? 'cursor-not-allowed opacity-80'
 			: 'focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-600',
 	]
 
-	const variants: Record<typeof variant, ClassValue[]> = {
+	const variants: Record<typeof variant, ClassNameValue[]> = {
 		solid: [
 			'bg-gray-700 border border-gray-700 px-4 py-2 hover:bg-gray-700 focus-visible:border-blue-600',
 			!isDisabled && 'hover:bg-gray-600',
@@ -38,7 +36,7 @@ export default function Button({
 
 	return (
 		<button
-			className={cn(baseStyles, variants[variant], className)}
+			className={twMerge(baseStyles, variants[variant], className)}
 			disabled={isDisabled}
 			type="button"
 			{...rest}

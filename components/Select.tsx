@@ -1,6 +1,5 @@
 import { SelectHTMLAttributes, DetailedHTMLProps, forwardRef, ForwardedRef } from 'react'
-
-import { cn } from '../lib/cn'
+import { twMerge } from 'tailwind-merge'
 
 type Props = {
 	children?: React.ReactNode
@@ -15,7 +14,7 @@ function Select(
 	return (
 		<select
 			ref={ref}
-			className={cn(
+			className={twMerge(
 				'transition duration-200 ease-in-out border-whiteAlpha-300 bg-gray-800 rounded-md hover:border-gray-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400',
 				isInvalid && 'border-red-300 ring-2 ring-red-300 hover:border-red-300',
 				className,
