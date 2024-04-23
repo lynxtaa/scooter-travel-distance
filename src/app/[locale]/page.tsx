@@ -1,4 +1,4 @@
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server'
 
 import { locales } from '../../../lib/locales'
 
@@ -11,7 +11,9 @@ export default async function Page({
 }) {
 	unstable_setRequestLocale(locale)
 
-	return <Home />
+	const t = await getMessages({ locale })
+
+	return <Home t={t as Record<string, string>} />
 }
 
 export function generateStaticParams() {

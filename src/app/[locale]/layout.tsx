@@ -22,7 +22,6 @@ export async function generateMetadata({
 			google: '3Tt_9iZaHQLOItmIIIDcwYxxdijZmUtwOKttlBOjY8o',
 			yandex: 'b2784b31e677d50f',
 		},
-		themeColor: '#ffffff',
 		manifest: '/manifest.json',
 		openGraph: {
 			description: t('description'),

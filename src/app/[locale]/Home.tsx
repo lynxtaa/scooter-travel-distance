@@ -1,6 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { NextSeo } from 'next-seo'
 
 import Calc from '../../components/Calc'
@@ -8,12 +7,10 @@ import LanguageSwitcher from '../../components/LanguageSwitcher'
 import MetricImperialSwitcher from '../../components/MetricImperialSwitcher'
 import useLocalStorage from '../../components/hooks/useLocalStorage'
 
-export default function Home() {
-	const t = useTranslations()
+export default function Home({ t }: { t: Record<string, string> }) {
 	const [isMetric, setIsMetric] = useLocalStorage<boolean>('system', true)
 
-	const title = t('title')
-	const description = t('description')
+	const { title, description } = t
 
 	return (
 		<div className="max-w-lg min-h-screen h-full my-0 mx-auto p-4">
@@ -43,7 +40,7 @@ export default function Home() {
 				/>
 				<LanguageSwitcher />
 			</div>
-			<Calc isMetric={isMetric} />
+			<Calc isMetric={isMetric} t={t} />
 		</div>
 	)
 }
