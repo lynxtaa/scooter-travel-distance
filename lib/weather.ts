@@ -50,7 +50,7 @@ export async function getWeather({
 
 	const response = await fetch(
 		`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`,
-		{ signal: abortController.signal as any },
+		{ signal: abortController.signal as any, cache: 'no-cache' },
 	)
 
 	if (!response.ok) {
