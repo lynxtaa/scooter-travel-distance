@@ -1,14 +1,15 @@
-import { type GetStaticProps } from 'next'
-import { useI18n } from 'next-localization'
+'use client'
+
+import { useTranslations } from 'next-intl'
 import { NextSeo } from 'next-seo'
 
-import Calc from '../components/Calc'
-import LanguageSwitcher from '../components/LanguageSwitcher'
-import MetricImperialSwitcher from '../components/MetricImperialSwitcher'
-import useLocalStorage from '../components/hooks/useLocalStorage'
+import Calc from '../../components/Calc'
+import LanguageSwitcher from '../../components/LanguageSwitcher'
+import MetricImperialSwitcher from '../../components/MetricImperialSwitcher'
+import useLocalStorage from '../../components/hooks/useLocalStorage'
 
 export default function Home() {
-	const { t } = useI18n()
+	const t = useTranslations()
 	const [isMetric, setIsMetric] = useLocalStorage<boolean>('system', true)
 
 	const title = t('title')
@@ -45,12 +46,4 @@ export default function Home() {
 			<Calc isMetric={isMetric} />
 		</div>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async function ({ locale }) {
-	const { default: lngDict = {} } = await import(`../locales/${locale!}.json`)
-
-	return {
-		props: { lngDict },
-	}
 }

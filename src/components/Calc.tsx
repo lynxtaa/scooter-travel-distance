@@ -1,4 +1,4 @@
-import { useI18n } from 'next-localization'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -33,7 +33,8 @@ type Props = {
 }
 
 export default function Calc({ isMetric }: Props) {
-	const { t } = useI18n()
+	const t = useTranslations()
+
 	const [result, setResult] = useState<number | null>(null)
 	const [weatherLoading, setWeatherLoading] = useState(false)
 

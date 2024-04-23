@@ -7,21 +7,15 @@ import {
 	type RenderOptions,
 } from '@testing-library/react'
 import { default as userEvent } from '@testing-library/user-event'
-import { I18nProvider } from 'next-localization'
 
 import { server, http, HttpResponse } from '../jest/server'
 import { type WeatherData } from '../lib/weather'
-import langEn from '../locales/en.json'
 
 import Calc from './Calc'
 
 const render = (el: React.ReactElement, options?: RenderOptions) =>
 	_render(el, {
-		wrapper: ({ children }) => (
-			<I18nProvider locale="en" lngDict={langEn}>
-				{children as any}
-			</I18nProvider>
-		),
+		wrapper: ({ children }) => <>{children as any}</>,
 		...options,
 	})
 
