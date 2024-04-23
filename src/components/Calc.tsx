@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -10,6 +12,7 @@ import Input from './Input'
 import InputRightAddon from './InputRightAddon'
 import Select from './Select'
 import Spinner from './Spinner'
+import { useIsMetric } from './hooks/useIsMetric'
 import useLocalStorage from './hooks/useLocalStorage'
 import fetchApi from './utils/fetchApi'
 import {
@@ -28,11 +31,11 @@ type FormValues = {
 }
 
 type Props = {
-	isMetric: boolean
 	t: Record<string, string>
 }
 
-export default function Calc({ isMetric, t }: Props) {
+export default function Calc({ t }: Props) {
+	const [isMetric] = useIsMetric()
 	const [result, setResult] = useState<number | null>(null)
 	const [weatherLoading, startTransition] = useTransition()
 
