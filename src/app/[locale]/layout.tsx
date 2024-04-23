@@ -11,9 +11,14 @@ export async function generateMetadata({
 	const t = await getTranslations({ locale })
 
 	return {
+		metadataBase: new URL(
+			process.env.VERCEL_URL !== undefined
+				? `https://${process.env.VERCEL_URL}`
+				: `http://localhost:${process.env.PORT ?? 3000}`,
+		),
 		title: t('title'),
 		description: t('description'),
-		robots: 'disallow',
+		robots: 'index,follow',
 		icons: {
 			icon: '/favicon-32x32.png',
 			apple: '/apple-touch-icon.png',

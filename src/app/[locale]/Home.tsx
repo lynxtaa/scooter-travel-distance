@@ -1,7 +1,5 @@
 'use client'
 
-import { NextSeo } from 'next-seo'
-
 import Calc from '../../components/Calc'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import MetricImperialSwitcher from '../../components/MetricImperialSwitcher'
@@ -10,11 +8,8 @@ import useLocalStorage from '../../components/hooks/useLocalStorage'
 export default function Home({ t }: { t: Record<string, string> }) {
 	const [isMetric, setIsMetric] = useLocalStorage<boolean>('system', true)
 
-	const { title, description } = t
-
 	return (
 		<div className="max-w-lg min-h-screen h-full my-0 mx-auto p-4">
-			<NextSeo title={title} description={description} />
 			<div className="flex mb-6 items-center">
 				<a
 					href="https://github.com/lynxtaa/scooter-travel-distance"
