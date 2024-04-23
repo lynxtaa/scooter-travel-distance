@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { type WeatherData } from '../../lib/weather'
@@ -34,7 +34,7 @@ type Props = {
 
 export default function Calc({ isMetric, t }: Props) {
 	const [result, setResult] = useState<number | null>(null)
-	const [weatherLoading, setWeatherLoading] = useState(false)
+	const [weatherLoading, startTransition] = useTransition()
 
 	const [savedValues, setSavedValues] = useLocalStorage<FormValues | undefined>(
 		'calcValues',
@@ -87,34 +87,42 @@ export default function Calc({ isMetric, t }: Props) {
 	}
 
 	async function loadWeather() {
-		setWeatherLoading(true)
+		try {
+			if (!('geolocation' in navigator)) {
+				throw new Error('Geolocation is not supported by your browser')
+			}
 
-		if (!('geolocation' in navigator)) {
-			throw new Error('Geolocation is not supported by your browser')
+			const position = await new Promise<GeolocationPosition>((resolve, reject) =>
+				navigator.geolocation.getCurrentPosition(resolve, reject),
+			)
+
+			const searchParams = new URLSearchParams({
+				latitude: String(position.coords.latitude),
+				longitude: String(position.coords.longitude),
+			})
+
+			const result = await fetchApi<WeatherData>(
+				`/api/weather?${searchParams.toString()}`,
+			)
+
+			if ('error' in result) {
+				throw result.error
+			}
+
+			const { main } = result.data
+
+			setValue(
+				'temperature',
+				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
+				{ shouldValidate: true },
+			)
+		} catch (error) {
+			console.error(error)
+			setError('temperature', {
+				type: 'weather-error',
+				message: t['error loading weather'],
+			})
 		}
-
-		const position = await new Promise<GeolocationPosition>((resolve, reject) =>
-			navigator.geolocation.getCurrentPosition(resolve, reject),
-		)
-
-		const searchParams = new URLSearchParams({
-			latitude: String(position.coords.latitude),
-			longitude: String(position.coords.longitude),
-		})
-
-		const result = await fetchApi<WeatherData>(`/api/weather?${searchParams.toString()}`)
-
-		if ('error' in result) {
-			throw result.error
-		}
-
-		const { main } = result.data
-
-		setValue(
-			'temperature',
-			String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
-			{ shouldValidate: true },
-		)
 	}
 
 	const loadingWeatherText = t['loading weather text']
@@ -202,19 +210,7 @@ export default function Calc({ isMetric, t }: Props) {
 							)}
 						</div>
 						<Button
-							onClick={() => {
-								loadWeather()
-									.catch(err => {
-										console.error(err)
-										setError('temperature', {
-											type: 'weather-error',
-											message: t['error loading weather'],
-										})
-									})
-									.finally(() => {
-										setWeatherLoading(false)
-									})
-							}}
+							onClick={() => startTransition(loadWeather)}
 							variant="link"
 							isDisabled={weatherLoading}
 						>
