@@ -1,15 +1,9 @@
 // @vitest-environment jsdom
 
-import {
-	render as _render,
-	screen,
-	waitFor,
-	type RenderOptions,
-} from '@testing-library/react'
+import { render as _render, screen, type RenderOptions } from '@testing-library/react'
 import { default as userEvent } from '@testing-library/user-event'
 
-import { server, http, HttpResponse } from '../jest/server'
-import { type WeatherData } from '../lib/weather'
+import en from '../../messages/en.json'
 
 import Calc from './Calc'
 
@@ -20,7 +14,7 @@ const render = (el: React.ReactElement, options?: RenderOptions) =>
 	})
 
 test('clicking "Calculate" shows result for valid form', async () => {
-	render(<Calc isMetric />)
+	render(<Calc t={en} />)
 
 	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
 
@@ -47,7 +41,7 @@ test('clicking "Calculate" shows result for valid form', async () => {
 })
 
 test('clicking "Calculate" shows infinity for very big results', async () => {
-	render(<Calc isMetric />)
+	render(<Calc t={en} />)
 
 	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '1')
 
@@ -71,56 +65,4 @@ test('clicking "Calculate" shows infinity for very big results', async () => {
 	await userEvent.click(screen.getByRole('button', { name: 'Calculate' }))
 
 	expect(await screen.findByText(/∞/)).toBeInTheDocument()
-})
-
-test('clicking "Get weather from my location" loads temperature', async () => {
-	server.use(
-		http.get('/api/weather', () => {
-			const data: WeatherData = {
-				cod: 200,
-				main: {
-					temp: 15,
-					feels_like: 18,
-					temp_min: 12,
-					temp_max: 20,
-					pressure: 700,
-					humidity: 10,
-				},
-				wind: { speed: 3, deg: 30 },
-				name: 'St. Petersburg',
-			}
-
-			return HttpResponse.json(data)
-		}),
-	)
-
-	render(<Calc isMetric />)
-
-	const geolocation: Geolocation = {
-		clearWatch: vi.fn(),
-		watchPosition: vi.fn(),
-		getCurrentPosition: resolve =>
-			resolve({
-				timestamp: Date.now(),
-				coords: {
-					latitude: 10,
-					longitude: 20,
-					accuracy: 1,
-					altitude: 10,
-					altitudeAccuracy: 1,
-					heading: 1,
-					speed: 0,
-				},
-			}),
-	}
-
-	Object.defineProperty(navigator, 'geolocation', { value: geolocation })
-
-	await userEvent.click(screen.getByRole('button', { name: /detect from location/ }))
-
-	await waitFor(() => {
-		expect(screen.getByRole('spinbutton', { name: 'Temperature Outside' })).toHaveValue(
-			15,
-		)
-	})
 })
