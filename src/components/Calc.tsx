@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { type WeatherData } from '../../lib/weather'
+import { loadWeather } from '../actions/loadWeather'
 
 import Button from './Button'
 import Counter from './Counter'
@@ -13,7 +13,6 @@ import InputRightAddon from './InputRightAddon'
 import Select from './Select'
 import Spinner from './Spinner'
 import useLocalStorage from './hooks/useLocalStorage'
-import fetchApi from './utils/fetchApi'
 import {
 	poundsToKg,
 	kmToMiles,
@@ -88,7 +87,7 @@ export default function Calc({ t, isMetric }: Props) {
 		setResult(isMetric ? km : kmToMiles(km))
 	}
 
-	async function loadWeather() {
+	async function getWeather() {
 		try {
 			if (!('geolocation' in navigator)) {
 				throw new Error('Geolocation is not supported by your browser')
@@ -98,20 +97,12 @@ export default function Calc({ t, isMetric }: Props) {
 				navigator.geolocation.getCurrentPosition(resolve, reject),
 			)
 
-			const searchParams = new URLSearchParams({
-				latitude: String(position.coords.latitude),
-				longitude: String(position.coords.longitude),
+			const result = await loadWeather({
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
 			})
 
-			const result = await fetchApi<WeatherData>(
-				`/api/weather?${searchParams.toString()}`,
-			)
-
-			if ('error' in result) {
-				throw result.error
-			}
-
-			const { main } = result.data
+			const { main } = result
 
 			setValue(
 				'temperature',
@@ -212,7 +203,7 @@ export default function Calc({ t, isMetric }: Props) {
 							)}
 						</div>
 						<Button
-							onClick={() => startTransition(loadWeather)}
+							onClick={() => startTransition(getWeather)}
 							variant="link"
 							isDisabled={weatherLoading}
 						>
