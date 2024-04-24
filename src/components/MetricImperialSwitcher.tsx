@@ -1,15 +1,16 @@
-'use client'
-
 import Button from './Button'
-import { useIsMetric } from './hooks/useIsMetric'
 
 type Props = {
 	className?: string
+	isMetric: boolean
+	setIsMetric: (isMetric: boolean) => void
 }
 
-export default function MetricImperialSwitcher({ className }: Props) {
-	const [isMetric, setIsMetric] = useIsMetric()
-
+export default function MetricImperialSwitcher({
+	className,
+	isMetric,
+	setIsMetric,
+}: Props) {
 	return (
 		<div className={className}>
 			<Button

@@ -14,7 +14,7 @@ const render = (el: React.ReactElement, options?: RenderOptions) =>
 	})
 
 test('clicking "Calculate" shows result for valid form', async () => {
-	render(<Calc t={en} />)
+	render(<Calc t={en} isMetric />)
 
 	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '70')
 
@@ -41,7 +41,7 @@ test('clicking "Calculate" shows result for valid form', async () => {
 })
 
 test('clicking "Calculate" shows infinity for very big results', async () => {
-	render(<Calc t={en} />)
+	render(<Calc t={en} isMetric />)
 
 	await userEvent.type(screen.getByRole('spinbutton', { name: "Rider's Weight" }), '1')
 
