@@ -1,21 +1,29 @@
-import { useState, useEffect, type Dispatch, type SetStateAction } from 'react'
+import { useState, useCallback, useLayoutEffect } from 'react'
 
 export default function useLocalStorage<T>(
 	key: string,
 	defaultValue: T,
-): [T, Dispatch<SetStateAction<T>>] {
-	const [value, setValue] = useState<T>(() => {
+): [T, (value: T) => void] {
+	const [value, setValue] = useState<T>(defaultValue)
+
+	useLayoutEffect(() => {
 		try {
 			const saved = localStorage.getItem(key)
-			return saved !== null ? (JSON.parse(saved).value as T) : defaultValue
+			if (saved !== null) {
+				setValue(JSON.parse(saved).value as T)
+			}
 		} catch {
-			return defaultValue
+			// ignore
 		}
-	})
+	}, [key])
 
-	useEffect(() => {
-		localStorage.setItem(key, JSON.stringify({ value }))
-	}, [key, value])
+	const onChange = useCallback(
+		(value: T) => {
+			localStorage.setItem(key, JSON.stringify({ value }))
+			setValue(value)
+		},
+		[key],
+	)
 
-	return [value, setValue]
+	return [value, onChange]
 }

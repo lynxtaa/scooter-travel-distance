@@ -51,13 +51,20 @@ export default function Calc({ t, isMetric }: Props) {
 		handleSubmit,
 		setValue,
 		setError,
+		reset,
 		formState: { errors },
-	} = useForm<FormValues>({ defaultValues: savedValues })
+	} = useForm<FormValues>()
 
 	const [prevIsMetric, setPrevIsMetric] = useState(isMetric)
 	if (isMetric !== prevIsMetric) {
 		setPrevIsMetric(isMetric)
 		setResult(null)
+	}
+
+	const [prevSavedValues, setPrevSavedValues] = useState(savedValues)
+	if (savedValues !== prevSavedValues) {
+		setPrevSavedValues(savedValues)
+		reset(savedValues)
 	}
 
 	function onSubmit(form: FormValues) {
