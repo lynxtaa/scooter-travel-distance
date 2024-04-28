@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "es2022",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -14,9 +14,14 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"outDir": ".next",
-		"types": ["jest", "react/next", "react-dom/next", "@testing-library/jest-dom"],
-		"incremental": true
+		"verbatimModuleSyntax": true,
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
 	},
 	"exclude": ["node_modules"],
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

@@ -1,6 +1,10 @@
-import { InputHTMLAttributes, DetailedHTMLProps, forwardRef, ForwardedRef } from 'react'
-
-import { cn } from '../lib/cn'
+import {
+	type InputHTMLAttributes,
+	type DetailedHTMLProps,
+	forwardRef,
+	type ForwardedRef,
+} from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type Props = {
 	className?: string
@@ -9,14 +13,14 @@ type Props = {
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 function Input(
-	{ className, isInvalid, isDisabled, ...rest }: Props,
+	{ className, isInvalid = false, isDisabled = false, ...rest }: Props,
 	ref: ForwardedRef<HTMLInputElement>,
 ) {
 	return (
 		<input
 			ref={ref}
 			readOnly={isDisabled}
-			className={cn(
+			className={twMerge(
 				'transition duration-200 ease-in-out border-whiteAlpha-300 bg-gray-800 rounded-md placeholder-whiteAlpha-500',
 				isDisabled
 					? 'focus:border-whiteAlpha-300 cursor-default opacity-80'

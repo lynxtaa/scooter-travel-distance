@@ -1,22 +1,15 @@
-import { GetStaticProps } from 'next'
-import { useI18n } from 'next-localization'
-import { NextSeo } from 'next-seo'
+'use client'
 
-import Calc from '../components/Calc'
-import LanguageSwitcher from '../components/LanguageSwitcher'
-import MetricImperialSwitcher from '../components/MetricImperialSwitcher'
-import useLocalStorage from '../components/hooks/useLocalStorage'
+import Calc from '../../components/Calc'
+import LanguageSwitcher from '../../components/LanguageSwitcher'
+import MetricImperialSwitcher from '../../components/MetricImperialSwitcher'
+import useLocalStorage from '../../components/hooks/useLocalStorage'
 
-export default function Home() {
-	const { t } = useI18n()
+export default function Home({ t }: { t: Record<string, string> }) {
 	const [isMetric, setIsMetric] = useLocalStorage<boolean>('system', true)
-
-	const title = t('title')
-	const description = t('description')
 
 	return (
 		<div className="max-w-lg min-h-screen h-full my-0 mx-auto p-4">
-			<NextSeo title={title} description={description} />
 			<div className="flex mb-6 items-center">
 				<a
 					href="https://github.com/lynxtaa/scooter-travel-distance"
@@ -42,15 +35,7 @@ export default function Home() {
 				/>
 				<LanguageSwitcher />
 			</div>
-			<Calc isMetric={isMetric} />
+			<Calc t={t} isMetric={isMetric} />
 		</div>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async function ({ locale }) {
-	const { default: lngDict = {} } = await import(`../locales/${locale}.json`)
-
-	return {
-		props: { lngDict },
-	}
 }

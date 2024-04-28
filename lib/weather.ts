@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { z } from 'zod'
 
 const WeatherDataSchema = z.object({
@@ -31,7 +33,7 @@ export async function getWeather({
 	latitude: number
 	longitude: number
 }): Promise<WeatherData> {
-	if (!process.env.OPENWEATHER_KEY) {
+	if (process.env.OPENWEATHER_KEY === undefined) {
 		throw new Error('Env OPENWEATHER_KEY not set')
 	}
 
@@ -47,8 +49,8 @@ export async function getWeather({
 	setTimeout(() => abortController.abort(), 10_000)
 
 	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
-		{ signal: abortController.signal as any },
+		`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`,
+		{ signal: abortController.signal as any, cache: 'no-cache' },
 	)
 
 	if (!response.ok) {

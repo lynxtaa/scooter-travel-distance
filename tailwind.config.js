@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const forms = require('@tailwindcss/forms')
 
 module.exports = {
-	content: ['./pages/**/*.tsx', './components/**/*.tsx', './styles/**/*.css'],
+	content: ['./src/**/*.tsx', './src/**/*.css'],
 	theme: {
 		extend: {
 			colors: {

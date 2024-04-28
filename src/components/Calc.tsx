@@ -1,8 +1,9 @@
-import { useI18n } from 'next-localization'
-import { useState, useEffect } from 'react'
+'use client'
+
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { WeatherData } from '../lib/weather'
+import { type WeatherData } from '../../lib/weather'
 
 import Button from './Button'
 import Counter from './Counter'
@@ -30,40 +31,52 @@ type FormValues = {
 
 type Props = {
 	isMetric: boolean
+	t: Record<string, string>
 }
 
-export default function Calc({ isMetric }: Props) {
-	const { t } = useI18n()
+export default function Calc({ t, isMetric }: Props) {
 	const [result, setResult] = useState<number | null>(null)
-	const [weatherLoading, setWeatherLoading] = useState(false)
+	const [weatherLoading, startTransition] = useTransition()
 
-	const [savedValues, setSavedValues] = useLocalStorage<FormValues>('calcValues')
+	const [savedValues, setSavedValues] = useLocalStorage<FormValues | undefined>(
+		'calcValues',
+		undefined,
+	)
 
 	const validatePositive = (value: string) =>
-		Number(value) > 0 ? undefined : t('positive number required')
+		Number(value) > 0 ? undefined : t['positive number required']
 
 	const {
 		register,
 		handleSubmit,
 		setValue,
 		setError,
+		reset,
 		formState: { errors },
-	} = useForm<FormValues>({ defaultValues: savedValues })
+	} = useForm<FormValues>()
 
-	useEffect(() => {
+	const [prevIsMetric, setPrevIsMetric] = useState(isMetric)
+	if (isMetric !== prevIsMetric) {
+		setPrevIsMetric(isMetric)
 		setResult(null)
-	}, [isMetric])
+	}
+
+	const [prevSavedValues, setPrevSavedValues] = useState(savedValues)
+	if (savedValues !== prevSavedValues) {
+		setPrevSavedValues(savedValues)
+		reset(savedValues)
+	}
 
 	function onSubmit(form: FormValues) {
-		const weight = isMetric ? +form.weight : poundsToKg(+form.weight)
+		const weight = isMetric ? Number(form.weight) : poundsToKg(Number(form.weight))
 
 		const temperature = isMetric
-			? +form.temperature
-			: fahrenheitToCelius(+form.temperature)
+			? Number(form.temperature)
+			: fahrenheitToCelius(Number(form.temperature))
 
-		const chargesNum = +form.chargesNum
-		const battery = +form.battery
-		const speed = +form.speed
+		const chargesNum = Number(form.chargesNum)
+		const battery = Number(form.battery)
+		const speed = Number(form.speed)
 
 		// Формула позаимствована отсюда
 		// https://odno-koleso.com/kalkulyator-probega
@@ -84,9 +97,7 @@ export default function Calc({ isMetric }: Props) {
 
 	async function loadWeather() {
 		try {
-			setWeatherLoading(true)
-
-			if (!navigator.geolocation) {
+			if (!('geolocation' in navigator)) {
 				throw new Error('Geolocation is not supported by your browser')
 			}
 
@@ -99,7 +110,9 @@ export default function Calc({ isMetric }: Props) {
 				longitude: String(position.coords.longitude),
 			})
 
-			const result = await fetchApi<WeatherData>(`/api/weather?${searchParams}`)
+			const result = await fetchApi<WeatherData>(
+				`/api/weather?${searchParams.toString()}`,
+			)
 
 			if ('error' in result) {
 				throw result.error
@@ -112,32 +125,35 @@ export default function Calc({ isMetric }: Props) {
 				String(Math.round(isMetric ? main.temp : celsiusToFahrenheit(main.temp))),
 				{ shouldValidate: true },
 			)
-		} catch (err) {
-			// eslint-disable-next-line no-console
-			console.error(err)
+		} catch (error) {
+			console.error(error)
 			setError('temperature', {
 				type: 'weather-error',
-				message: t('error loading weather'),
+				message: t['error loading weather'],
 			})
-		} finally {
-			setWeatherLoading(false)
 		}
 	}
 
-	const loadingWeatherText = t('loading weather text')
+	const loadingWeatherText = t['loading weather text']
 
 	return (
 		<div>
 			<h1 className="mb-6 leading-tight">
-				<span className="text-3xl">{t('title')}</span>
+				<span className="text-3xl">{t.title}</span>
 				<br />
-				<span className="text-md opacity-50">{t('subtitle')}</span>
+				<span className="text-md opacity-50">{t.subtitle}</span>
 			</h1>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form
+				onSubmit={event => {
+					handleSubmit(onSubmit)(event).catch(err => {
+						console.error(err)
+					})
+				}}
+			>
 				<div className="space-y-4">
 					<div>
 						<label htmlFor="weight" className="block mb-2">
-							{t("Rider's Weight")}
+							{t["Rider's Weight"]}
 						</label>
 						<div className="flex flex-row w-full">
 							<Input
@@ -147,11 +163,11 @@ export default function Calc({ isMetric }: Props) {
 								isInvalid={Boolean(errors.weight)}
 								placeholder={isMetric ? '75' : '165'}
 								{...register('weight', {
-									required: t('required'),
+									required: t.required,
 									validate: validatePositive,
 								})}
 							/>
-							<InputRightAddon>{t(isMetric ? 'kg' : 'lbs')}</InputRightAddon>
+							<InputRightAddon>{t[isMetric ? 'kg' : 'lbs']}</InputRightAddon>
 						</div>
 						{errors.weight && (
 							<FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
@@ -160,7 +176,7 @@ export default function Calc({ isMetric }: Props) {
 
 					<div>
 						<label htmlFor="battery" className="block mb-2">
-							{t('Battery Capacity')}
+							{t['Battery Capacity']}
 						</label>
 						<div className="flex flex-row w-full">
 							<Input
@@ -170,11 +186,11 @@ export default function Calc({ isMetric }: Props) {
 								isInvalid={Boolean(errors.battery)}
 								className="w-full rounded-r-none z-10"
 								{...register('battery', {
-									required: t('required'),
+									required: t.required,
 									validate: validatePositive,
 								})}
 							/>
-							<InputRightAddon>{t('W⋅h')}</InputRightAddon>
+							<InputRightAddon>{t['W⋅h']}</InputRightAddon>
 						</div>
 						{errors.battery && (
 							<FormErrorMessage>{errors.battery?.message}</FormErrorMessage>
@@ -184,7 +200,7 @@ export default function Calc({ isMetric }: Props) {
 					<div>
 						<div className="mb-2">
 							<label htmlFor="temperature" className="block mb-2">
-								{t('Temperature Outside')}
+								{t['Temperature Outside']}
 							</label>
 							<div className="flex flex-row w-full">
 								<Input
@@ -194,7 +210,7 @@ export default function Calc({ isMetric }: Props) {
 									isInvalid={Boolean(errors.temperature)}
 									placeholder={isMetric ? '20' : '70'}
 									isDisabled={weatherLoading}
-									{...register('temperature', { required: t('required') })}
+									{...register('temperature', { required: t.required })}
 								/>
 								<InputRightAddon>°{isMetric ? 'C' : 'F'}</InputRightAddon>
 							</div>
@@ -202,21 +218,25 @@ export default function Calc({ isMetric }: Props) {
 								<FormErrorMessage>{errors.temperature?.message}</FormErrorMessage>
 							)}
 						</div>
-						<Button onClick={loadWeather} variant="link" isDisabled={weatherLoading}>
+						<Button
+							onClick={() => startTransition(loadWeather)}
+							variant="link"
+							isDisabled={weatherLoading}
+						>
 							{weatherLoading ? (
 								<span className="inline-flex flex-row items-center space-x-1">
 									<Spinner className="w-7 h-7" />
 									<span>{loadingWeatherText}</span>
 								</span>
 							) : (
-								t('detect from location')
+								t['detect from location']
 							)}
 						</Button>
 					</div>
 
 					<div>
 						<label htmlFor="chargesNum" className="block mb-2">
-							{t('Full battery charges count')}
+							{t['Full battery charges count']}
 						</label>
 						<Input
 							type="number"
@@ -225,7 +245,7 @@ export default function Calc({ isMetric }: Props) {
 							className="w-full rounded-r-none z-10"
 							isInvalid={Boolean(errors.chargesNum)}
 							{...register('chargesNum', {
-								required: t('required'),
+								required: t.required,
 								validate: validatePositive,
 							})}
 						/>
@@ -236,19 +256,19 @@ export default function Calc({ isMetric }: Props) {
 
 					<div>
 						<label htmlFor="speed" className="block mb-2">
-							{t('Speed')}
+							{t.Speed}
 						</label>
 						<Select
 							className="w-full"
 							id="speed"
 							defaultValue=""
 							isInvalid={Boolean(errors.speed)}
-							{...register('speed', { required: t('required') })}
+							{...register('speed', { required: t.required })}
 						>
 							<option disabled value="" hidden></option>
-							<option value="1">{t('Slow ride')}</option>
-							<option value="0.81">{t('Medium speed ride')}</option>
-							<option value="0.54">{t('Fast ride')}</option>
+							<option value="1">{t['Slow ride']}</option>
+							<option value="0.81">{t['Medium speed ride']}</option>
+							<option value="0.54">{t['Fast ride']}</option>
 						</Select>
 						{errors.speed && <FormErrorMessage>{errors.speed?.message}</FormErrorMessage>}
 					</div>
@@ -257,12 +277,12 @@ export default function Calc({ isMetric }: Props) {
 				<div className="flex items-center mt-4">
 					{typeof result === 'number' && (
 						<div className="text-xl">
-							{t('Distance')}: {result <= 100_000 ? <Counter>{result}</Counter> : '∞'}{' '}
-							{t(isMetric ? 'km' : 'miles')}
+							{t.Distance}: {result <= 100_000 ? <Counter>{result}</Counter> : '∞'}{' '}
+							{t[isMetric ? 'km' : 'miles']}
 						</div>
 					)}
 					<Button type="submit" className="ml-auto">
-						{t('Calculate')}
+						{t.Calculate}
 					</Button>
 				</div>
 			</form>

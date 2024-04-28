@@ -1,15 +1,15 @@
 import Button from './Button'
 
 type Props = {
-	isMetric: boolean
-	setIsMetric: (value: boolean) => void
 	className?: string
+	isMetric: boolean
+	setIsMetric: (isMetric: boolean) => void
 }
 
 export default function MetricImperialSwitcher({
+	className,
 	isMetric,
 	setIsMetric,
-	className,
 }: Props) {
 	return (
 		<div className={className}>
