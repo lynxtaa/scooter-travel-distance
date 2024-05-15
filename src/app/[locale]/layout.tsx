@@ -18,6 +18,13 @@ export async function generateMetadata({
 		),
 		title: t('title'),
 		description: t('description'),
+		alternates: {
+			canonical: '/',
+			languages: {
+				ru: '/ru',
+				en: '/en',
+			},
+		},
 		robots: 'index,follow',
 		icons: {
 			icon: '/favicon-32x32.png',
