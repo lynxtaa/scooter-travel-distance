@@ -19,10 +19,10 @@ export async function generateMetadata({
 		title: t('title'),
 		description: t('description'),
 		alternates: {
-			canonical: '/',
+			canonical: 'https://scooter-travel-calc.vercel.app/',
 			languages: {
-				ru: '/ru',
-				en: '/en',
+				ru: 'https://scooter-travel-calc.vercel.app/ru',
+				en: 'https://scooter-travel-calc.vercel.app/en',
 			},
 		},
 		robots: 'index,follow',
