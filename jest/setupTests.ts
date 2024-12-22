@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 vi.mock('../components/Counter')
 
 function cleanup() {
-	if (typeof window !== 'undefined') {
+	if (globalThis.window !== undefined) {
 		sessionStorage.clear()
 		localStorage.clear()
 	}

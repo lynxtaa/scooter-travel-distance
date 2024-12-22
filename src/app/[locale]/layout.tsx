@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
-import { unstable_setRequestLocale, getTranslations } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getTranslations, getMessages, setRequestLocale } from 'next-intl/server'
 
 import '../../styles/global.css'
 
 export async function generateMetadata({
-	params: { locale },
+	params,
 }: {
-	params: { locale: string }
+	params: Promise<{ locale: string }>
 }): Promise<Metadata> {
+	const { locale } = await params
+
 	const t = await getTranslations({ locale })
 
 	return {
@@ -49,18 +52,22 @@ export async function generateMetadata({
 	}
 }
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
 	children,
-	params: { locale },
+	params,
 }: {
 	children: React.ReactNode
-	params: { locale: string }
+	params: Promise<{ locale: string }>
 }) {
-	unstable_setRequestLocale(locale)
+	const { locale } = await params
+	setRequestLocale(locale)
+	const messages = await getMessages()
 
 	return (
 		<html lang={locale}>
-			<body>{children}</body>
+			<body>
+				<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+			</body>
 		</html>
 	)
 }
