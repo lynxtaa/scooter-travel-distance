@@ -6,7 +6,6 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
-	swcMinify: true,
 }
 
 export default bundleAnalyzer({
