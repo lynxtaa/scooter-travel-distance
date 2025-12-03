@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { render as _render, screen, type RenderOptions } from '@testing-library/react'
-import { default as userEvent } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 import en from '../../messages/en.json'
 

@@ -12,7 +12,6 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			reporter: ['html', isCi ? 'text' : 'text-summary'],
-			all: true,
 			include: ['**/*.ts'],
 		},
 		snapshotFormat: {
