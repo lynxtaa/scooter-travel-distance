@@ -4,3 +4,4 @@ src/serviceWorker.ts
 /.next/
 /out/
 pnpm-lock.yaml
+next-env.d.ts
