@@ -1,5 +1,5 @@
 import { animate } from 'popmotion'
-import { useEffect, startTransition, useState, useRef } from 'react'
+import { useEffect, startTransition, useState, useRef, useLayoutEffect } from 'react'
 
 type Props = {
 	children: number
@@ -9,7 +9,10 @@ export default function Counter({ children }: Props) {
 	const [value, setValue] = useState(0)
 
 	const latestValue = useRef(value)
-	latestValue.current = value
+
+	useLayoutEffect(() => {
+		latestValue.current = value
+	})
 
 	useEffect(() => {
 		const { stop } = animate({

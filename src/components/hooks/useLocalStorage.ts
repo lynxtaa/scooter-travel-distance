@@ -10,6 +10,7 @@ export default function useLocalStorage<T>(
 		try {
 			const saved = localStorage.getItem(key)
 			if (saved !== null) {
+				// eslint-disable-next-line react-hooks/set-state-in-effect
 				setValue(JSON.parse(saved).value as T)
 			}
 		} catch {
